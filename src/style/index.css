@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* css variable */
+:root{
+  --ashGray-color:#C8CFC4;
+  --silver-color:#B2AEA3;
+  --brownSugar-color:#B97045;
+  --oldGold-color:#DBC066;
+  --floralWhite-color:#FAF6EF;
+  
+}
+
+
+@layer base {
+  body {
+    @apply block m-0 p-0 box-border outline-2 border-eerieBlack bg-floralWhite text-eerieBlack font-raleway;
+  }
+
+}
+
+@layer components {
+  .primary-button {
+    @apply w-20 h-10 border-2 border-eerieBlack rounded-full bg-transparent font-semibold 
+    hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
+  }
+  
+  /* HomePage */
+  .bodyHomePage{
+    transition: background-color 0.5s ease-in;
+    @apply snap-y snap-mandatory w-screen h-screen overflow-y-auto
+  }
+}
+
