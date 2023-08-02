@@ -8,6 +8,13 @@ function useHomePage() {
 
   const divRef = useRef<HTMLDivElement>(null);
 
+  //getComputedStyle avaScript ที่สามารถได้รับค่าของรูปแบบการแสดงผลทั้งหมดของตัวอย่างวัตถุ HTML. รวมถึงรูปแบบที่ถูกประยุกต์ใช้จาก CSS
+  //document.documentElement ระบุวัตถุ root ของ HTML หรือ <html> element.
+  //getPropertyValue() เป็นเมธอดที่สามารถได้รับค่าของ property ที่ระบุใน CSS.
+  const bgColor = getComputedStyle(document.documentElement).getPropertyValue(
+    backgroundColor
+  );
+
   const newScrollY = () => {
     const ScrollY = handleDIVScrollY(divRef);
     if (ScrollY !== undefined) {
@@ -31,26 +38,26 @@ function useHomePage() {
   useEffect(() => {
     switch (true) {
       case scrollY < 500: //0
-        setBackgroundColor("#c8cfc4");
+        setBackgroundColor("--ashGray-color");
         break;
       case scrollY >= 500 && scrollY < 1350: //923
-        setBackgroundColor("#b2aea3");
+        setBackgroundColor("--silver-color");
         break;
       case scrollY >= 1350 && scrollY < 2260: //1846
-        setBackgroundColor("#b97045");
+        setBackgroundColor("--brownSugar-color");
         break;
       case scrollY >= 1840: //2768
-        setBackgroundColor("#DBC066");
+        setBackgroundColor("--oldGold-color");
         break;
       default:
-        setBackgroundColor("#FAF6EF");
+        setBackgroundColor("--floralWhite-color");
         break;
     }
   }, [scrollY]);
 
   return {
     scrollY,
-    backgroundColor,
+    bgColor,
     divRef
   };
 }

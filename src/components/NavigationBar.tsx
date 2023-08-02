@@ -13,9 +13,9 @@ function NavigationBar() {
       <div className="relative flex justify-between items-center h-16 bg-transparent ">
         <div className=" pl-4 sm:ml-8 md:ml-12 lg:ml-16 py-4">
           <NavLink to="/">
-            <span className="font-dancing text-5xl font-bold cursor-pointer">
+            <h2 className="font-dancing cursor-pointer select-none">
               Roberta
-            </span>
+            </h2>
           </NavLink>
         </div>
         <div className=" mr-4 sm:mr-8 md:mr-16 lg:mr-20">

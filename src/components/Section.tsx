@@ -14,7 +14,7 @@ function Section({
   children,
 }: SectionType) {
   return (
-    <div
+    <section
       id={SectionId}
       className={`relative snap-center w-full h-screen px-4 z-0`}
     >
@@ -31,15 +31,15 @@ function Section({
         </div>
       </div>
       <div className="absolute bottom-[12%] sm:bottom-[7%] md:bottom-[5%] lg:bottom-4 2xl:bottom-[5%] left-1/2 lg:left-16 w-80 -translate-x-1/2 lg:translate-x-0 ">
-        <p className="text-base lg:text-lg font-semibold text-justify ">{children}</p>
+        <p className="text-base font-semibold text-justify ">{children}</p>
         <br />
       </div>
-      <div className=" absolute bottom-2 left-4 sm:left-8 md:left-12 lg:left-16 z-10">
+      {/* <div className=" absolute bottom-2 left-4 sm:left-8 md:left-12 lg:left-16 z-10">
         <span className="text-sm xl:text-base ">
           © 2023 <a href="#A4">zombox0633</a>
         </span>
-      </div>
-    </div>
+      </div> */}
+    </section>
   );
 }
 

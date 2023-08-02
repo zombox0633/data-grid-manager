@@ -8,12 +8,12 @@ import useHomePage from "hook/useHomePage";
 import { HOMEPAGE_LIST } from "src/constraint/HOMEPAGE_LIST";
 
 function HomePage() {
-  const { scrollY, backgroundColor, divRef } = useHomePage();
+  const { scrollY, bgColor, divRef } = useHomePage();
 
   return (
     <div
       ref={divRef}
-      style={{ backgroundColor: backgroundColor }}
+      style={{ backgroundColor: bgColor }}
       className="bodyHomePage"
     >
       <div className=" absolute bottom-6 right-12 z-10">
@@ -31,9 +31,7 @@ function HomePage() {
           </Section>
         ))}
       <div id="A4" className="snap-center h-screen ">
-        <div className="flex items-center justify-center h-screen mx-[5%]">
-          <Footer />
-        </div>
+        <Footer />
       </div>
     </div>
   );
