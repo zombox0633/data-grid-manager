@@ -1,0 +1,43 @@
+type SignInType = {
+  imgUrl:string
+  imgAlt?:string
+}
+
+export const SIGNINPAGE_LIST:Readonly<SignInType[]> = [
+  {
+    imgUrl:"https://images.unsplash.com/photo-1551199870-171befeb59ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1123&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1551136368-334da5d4004e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1117&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1553106345-9356e2b8a8d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1565527461565-44a737053972?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1536241455566-5709c3aefd3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1220&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1545924288-e477929c7d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1144&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1545781287-82be77a9695b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1046&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1536401964510-a067b2dc33b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1224&q=80",
+    imgAlt:"Steve_Johnson"
+  },
+  {
+    imgUrl:"https://images.unsplash.com/photo-1551041887-7fa3e7b480e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+    imgAlt:"Steve_Johnson"
+  },
+]
