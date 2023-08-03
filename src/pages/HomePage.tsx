@@ -1,5 +1,3 @@
-//ref https://www.frontendpractice.com/projects/backstage-talks
-
 import Footer from "components/Footer";
 import Section from "components/Section";
 
@@ -8,13 +6,13 @@ import useHomePage from "hook/useHomePage";
 import { HOMEPAGE_LIST } from "src/constraint/HOMEPAGE_LIST";
 
 function HomePage() {
-  const { scrollY, bgColor, divRef } = useHomePage();
+  const { scrollY, backgroundColor, divRef } = useHomePage();
 
   return (
     <div
       ref={divRef}
-      style={{ backgroundColor: bgColor }}
-      className="bodyHomePage"
+      // style={{ backgroundColor: backgroundColor }}
+      className={`bodyHomePage ${backgroundColor}`}
     >
       <div className=" absolute bottom-6 right-12 z-10">
         <p>{scrollY}</p>

@@ -1,3 +1,5 @@
+//ref https://www.frontendpractice.com/projects/backstage-talks
+
 import React from "react";
 
 type SectionType = {
@@ -21,7 +23,7 @@ function Section({
       <div className="flex justify-center min-w-full h-[18rem] sm:h-[20rem] md:h-[24rem] lg:h-[28rem] xl:h-[30rem] 2xl:h-[32rem] translate-y-[60%] md:translate-y-[45%] lg:translate-y-1/4 xl:translate-y-[20%] 2xl:translate-y-[30%] drop-shadow-2xl">
         <div>
           <img
-            className="h-full object-cover object-center mb-6 border-8"
+            className="h-full img-cover mb-6 border-8"
             src={srcImg}
             alt={altImg}
           />
