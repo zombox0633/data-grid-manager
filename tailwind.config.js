@@ -9,7 +9,13 @@ export default {
     extend: {
       colors: {
         eerieBlack: "#1C1B19",
-        floralWhite: "#FAF6EF"
+        floralWhite: "#FAF6EF",
+        silver: "#B2AEA3",
+        ashGray: "#C8CFC4",
+        cambridgeBlue: "#8DB9A5",
+        brunswickGreen: "#184742",
+        brownSugar: "#B97045",
+        oldGold: "#DBC066",
       },
     },
   },

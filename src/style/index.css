@@ -33,6 +33,12 @@
 }
 
 @layer components {
+  /* img */
+  .img-cover{
+    @apply object-cover object-center
+  }
+
+  /* button */
   .primary-button {
     @apply w-20 h-10 border-2 border-eerieBlack rounded-full bg-transparent font-semibold 
     hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
