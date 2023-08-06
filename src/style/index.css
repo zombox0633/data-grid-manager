@@ -3,39 +3,38 @@
 @tailwind utilities;
 
 /* css variable */
-:root{
-  --floralWhite-color:#FAF6EF;
-  --silver-color:#B2AEA3;
+:root {
+  --floralWhite-color: #faf6ef;
+  --silver-color: #b2aea3;
 
-  --ashGray-color:#C8CFC4;
-  --cambridgeBlue-color:#8DB9A5;
-  --brunswickGreen-color:#184742;
+  --ashGray-color: #c8cfc4;
+  --cambridgeBlue-color: #8db9a5;
+  --brunswickGreen-color: #184742;
 
-  --brownSugar-color:#B97045;
-  --oldGold-color:#DBC066;
+  --brownSugar-color: #b97045;
+  --oldGold-color: #dbc066;
 }
-
 
 @layer base {
   body {
     @apply block m-0 p-0 box-border outline-2 border-eerieBlack bg-floralWhite text-eerieBlack font-raleway;
   }
 
-  h1{
-    @apply text-6xl font-bold
+  h1 {
+    @apply text-6xl font-bold;
   }
-  h2{
-    @apply text-5xl font-bold
+  h2 {
+    @apply text-5xl font-bold;
   }
-  h3{
-    @apply text-3xl font-bold
+  h3 {
+    @apply text-3xl font-bold;
   }
 }
 
 @layer components {
   /* img */
-  .img-cover{
-    @apply object-cover object-center
+  .img-cover {
+    @apply object-cover object-center;
   }
 
   /* button */
@@ -43,12 +42,128 @@
     @apply w-20 h-10 border-2 border-eerieBlack rounded-full bg-transparent font-semibold 
     hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
   }
-  
+
   /* HomePage */
-  .bodyHomePage{
+  .bodyHomePage {
     transition: background-color 0.5s ease-in;
-    @apply snap-y snap-mandatory w-screen h-screen overflow-y-auto
+    @apply snap-y snap-mandatory w-screen h-screen overflow-y-auto;
   }
 
+  /* GlobalLoading */
+  .opacity__transition{
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
 
+  .loading__visible{
+    @apply opacity__transition visible opacity-100
+  }
+
+  .loading__hidden{
+    @apply opacity__transition opacity-0 invisible
+  }
+
+  .box{
+    @apply absolute border-[16px] border-eerieBlack drop-shadow-2xl
+  }
+  .animation1 {
+    animation: anime1 4s 0s ease-in-out infinite forwards;
+    @apply box w-28 h-12 mt-16 ml-0 
+  }
+  .animation2 {
+    animation: anime2 4s 0s ease-in-out infinite forwards;
+    @apply box w-12 h-12 mt-0 ml-0
+  }
+  .animation3 {
+    animation: anime3 4s 0s ease-in-out infinite forwards;
+    @apply box w-12 h-12 mt-0 ml-16
+  }
+
+  @keyframes anime1 {
+    0%{
+      @apply w-28 h-12 mt-16 ml-0
+    }
+    12.5%{
+      @apply w-12 h-12 mt-16 ml-0
+    }
+    25%{
+      @apply w-12 h-12 mt-16 ml-0
+    }
+    37.5%{
+      @apply w-12 h-12 mt-16 ml-0
+    }
+    50%{
+      @apply w-12 h-12 mt-16 ml-0
+    }
+    62.5%{
+      @apply w-12 h-12 mt-16 ml-0
+    }
+    75%{
+      @apply w-12 h-28 mt-0 ml-0
+    }
+    87.5%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+    100%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+  }
+  @keyframes anime2 {
+    0%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+    12.5%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+    25%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+    37.5%{
+      @apply w-12 h-12 mt-0 ml-0
+    }
+    50%{
+      @apply w-28 h-12 mt-0 ml-0
+    }
+    62.5%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+    75%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+    87.5%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+    100%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+  }
+
+  @keyframes anime3 {
+    0%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+    12.5%{
+      @apply w-12 h-12 mt-0 ml-16
+    }
+    25%{
+      @apply w-12 h-28 mt-0 ml-16
+    }
+    37.5%{
+      @apply w-12 h-12 mt-16 ml-16
+    }
+    50%{
+      @apply w-12 h-12 mt-16 ml-16
+    }
+    62.5%{
+      @apply w-12 h-12 mt-16 ml-16
+    }
+    75%{
+      @apply w-12 h-12 mt-16 ml-16
+    }
+    87.5%{
+      @apply w-12 h-12 mt-16 ml-16
+    }
+    100%{
+      @apply w-28 h-12 mt-16 ml-0
+    }
+  }
 }

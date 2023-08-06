@@ -9,7 +9,7 @@ function NavigationBar() {
   };
 
   return (
-    <div className="sticky top-0 inset-x-0 h-0 z-50">
+    <div className="sticky top-0 inset-x-0 h-0 z-40">
       <div className="relative flex justify-between items-center h-16 bg-transparent ">
         <div className=" pl-4 sm:ml-8 md:ml-12 lg:ml-16 py-4">
           <NavLink to="/">

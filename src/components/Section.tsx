@@ -6,7 +6,7 @@ type SectionType = {
   SectionId: string;
   srcImg: string;
   altImg: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 function Section({

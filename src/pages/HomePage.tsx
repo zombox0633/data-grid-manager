@@ -1,3 +1,8 @@
+import { useEffect } from "react";
+import { useAtom } from "jotai";
+
+import { loadingAtom } from "atoms/loadingAtom";
+
 import Footer from "components/Footer";
 import Section from "components/Section";
 
@@ -6,14 +11,25 @@ import useHomePage from "hook/useHomePage";
 import { HOMEPAGE_LIST } from "src/constraint/HOMEPAGE_LIST";
 
 function HomePage() {
+  const [, setIsOpen] = useAtom(loadingAtom);
+
   const { scrollY, backgroundColor, divRef } = useHomePage();
 
+  useEffect(() => {
+    setIsOpen(true);
+
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      setIsOpen(false);
+    };
+  }, [setIsOpen]);
+
   return (
-    <div
-      ref={divRef}
-      // style={{ backgroundColor: backgroundColor }}
-      className={`bodyHomePage ${backgroundColor}`}
-    >
+    <div ref={divRef} className={`bodyHomePage ${backgroundColor}`}>
       <div className=" absolute bottom-6 right-12 z-10">
         <p>{scrollY}</p>
       </div>

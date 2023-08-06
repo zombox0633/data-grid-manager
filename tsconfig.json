@@ -18,14 +18,15 @@
     "baseUrl": ".",
     "paths": {
       "api/*": ["./src/api/*"],
+      "atoms/*": ["./src/atoms/*"],
       "assets/*": ["./src/assets/*"],
       "components/*": ["src/components/*"],
-      "helpers/*":["./src/helpers/*"],
+      "helpers/*": ["./src/helpers/*"],
       "hook/*": ["./src/hook/*"],
       "pages/*": ["src/pages/*"],
       "config/*": ["./src/config/*"],
       "style/*": ["./src/style/*"],
-      "types/*": ["./src/types/*"],
+      "types/*": ["./src/types/*"]
     }
   },
   "include": ["src"],
