@@ -22,7 +22,7 @@ function GlobalLoading({ children }: PropsWithChildren) {
     <div className="relative">
       <div
         className={`absolute top-0 ${
-          isOpen ? "loading__visible" : "loading__hidden"
+          isOpen ? "loading__visible1" : "loading__hidden"
         } flex justify-center items-center w-screen h-screen bg-white  z-50 overflow-hidden`}
       >
         <div className=" relative w-28 h-28">

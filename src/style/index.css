@@ -38,13 +38,22 @@
   }
 
   /* button */
-  .primary-button {
+  .primary__button {
     @apply w-20 h-10 border-2 border-eerieBlack rounded-full bg-transparent font-semibold 
     hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
   }
 
+  .sign_in__button{
+    @apply h-12 rounded-3xl bg-cambridgeBlue text-lg text-floralWhite font-bold
+  }
+
+  /* input */
+  .sign_in__input{
+    @apply w-full h-12 px-2 bg-floralWhite text-lg font-bold focus:drop-shadow-2xl
+  }
+
   /* HomePage */
-  .bodyHomePage {
+  .home_page__body {
     transition: background-color 0.5s ease-in;
     @apply snap-y snap-mandatory w-screen h-screen overflow-y-auto;
   }
@@ -54,7 +63,11 @@
     transition: opacity 0.5s ease, visibility 0.5s ease;
   }
 
-  .loading__visible{
+  .loading__visible1{
+    @apply visible opacity-100
+  }
+
+  .loading__visible2{
     @apply opacity__transition visible opacity-100
   }
 

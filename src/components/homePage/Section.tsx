@@ -26,6 +26,7 @@ function Section({
             className="h-full img-cover mb-6 border-8"
             src={srcImg}
             alt={altImg}
+            loading="lazy"
           />
           <div className="w-1/2 mx-auto text-center">
             <span className="text-xl font-semibold">{altImg}</span>

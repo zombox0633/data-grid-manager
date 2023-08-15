@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { loadingAtom } from "atoms/loadingAtom";
 
 import Footer from "components/Footer";
-import Section from "components/Section";
+import Section from "components/homePage/Section";
 
 import useHomePage from "hook/useHomePage";
 
@@ -20,7 +20,7 @@ function HomePage() {
 
     const timer = setTimeout(() => {
       setIsOpen(false);
-    }, 2000);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
@@ -29,7 +29,7 @@ function HomePage() {
   }, [setIsOpen]);
 
   return (
-    <div ref={divRef} className={`bodyHomePage ${backgroundColor}`}>
+    <div ref={divRef} className={`home_page__body ${backgroundColor}`}>
       <div className=" absolute bottom-6 right-12 z-10">
         <p>{scrollY}</p>
       </div>
