@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from "react";
 
 type DefaultButtonPropTypes = Omit<
   ComponentPropsWithoutRef<"button">,
-  "style" | "className"
+  "className"
 > & {
   addClassName?: string;
 };

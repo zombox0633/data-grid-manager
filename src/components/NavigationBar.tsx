@@ -1,10 +1,18 @@
 import { NavLink } from "react-router-dom";
+import { useAtom } from "jotai";
 
 import useNavigationHandler from "hook/useNavigationHandler";
+import useAuthentication from "hook/useAuth/useAuthentication";
+
+import { registerAtom } from "atoms/registeAtom";
+
 import DefaultButton from "./button/DefaultButton";
 
 function NavigationBar() {
   const { handleLink } = useNavigationHandler();
+  const { onSignOut } = useAuthentication();
+
+  const [register] = useAtom(registerAtom);
 
   return (
     <div className="sticky top-0 inset-x-0 h-0 z-40">
@@ -15,9 +23,15 @@ function NavigationBar() {
           </NavLink>
         </div>
         <div className=" mr-4 sm:mr-8 md:mr-16 lg:mr-20">
-          <DefaultButton onClick={() => handleLink("/sign-in")}>
-            Sign in
-          </DefaultButton>
+          {register ? (
+            <DefaultButton onClick={onSignOut}>
+              Sign out
+            </DefaultButton>
+          ) : (
+            <DefaultButton onClick={() => handleLink("/sign-in")}>
+              Sign in
+            </DefaultButton>
+          )}
         </div>
       </div>
     </div>
