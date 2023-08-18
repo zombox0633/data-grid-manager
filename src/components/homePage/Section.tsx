@@ -6,15 +6,11 @@ type SectionType = {
   SectionId: string;
   srcImg: string;
   altImg: string;
+  onImgLoaded: () => void;
   children?: React.ReactNode;
 };
 
-function Section({
-  SectionId,
-  srcImg,
-  altImg,
-  children,
-}: SectionType) {
+function Section({ SectionId, srcImg, altImg, onImgLoaded, children }: SectionType) {
   return (
     <section
       id={SectionId}
@@ -26,7 +22,8 @@ function Section({
             className="h-full img-cover mb-6 border-8"
             src={srcImg}
             alt={altImg}
-            loading="lazy"
+            loading="eager"
+            onLoad={onImgLoaded}
           />
           <div className="w-1/2 mx-auto text-center">
             <span className="text-xl font-semibold">{altImg}</span>

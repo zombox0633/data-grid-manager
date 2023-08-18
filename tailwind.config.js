@@ -12,7 +12,7 @@ export default {
         floralWhite: "#FAF6EF",
         silver: "#B2AEA3",
         ashGray: "#C8CFC4",
-        cambridgeBlue: "#8DB9A5",
+        mint: "#53B88C",
         brunswickGreen: "#184742",
         brownSugar: "#B97045",
         oldGold: "#DBC066",
