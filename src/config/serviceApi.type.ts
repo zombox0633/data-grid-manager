@@ -9,3 +9,5 @@ export interface APIResponseErrorType {
   data?: null;
   error?: APIErrorType;
 }
+
+export type AxiosReturn<T> = Promise<[T, null] | [null, string]>;
