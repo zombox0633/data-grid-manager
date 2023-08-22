@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import useNavigationHandler from "hook/useNavigationHandler";
 import useAuthentication from "hook/useAuth/useAuthentication";
 
-import { registerAtom } from "atoms/registeAtom";
+import { registerAtom } from "atoms/registerAtom";
 
 import DefaultButton from "./button/DefaultButton";
 

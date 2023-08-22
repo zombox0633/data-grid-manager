@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
-import { authenticateAtom } from "atoms/authenticateAtom";
-import { registerAtom } from "atoms/registeAtom";
-
-import authenticateUser from "api/authentication/authentication";
-import getRegister from "api/user/register";
+import { authenticateAtom, removeSecretAtom } from "atoms/authenticateAtom";
 
 import useNavigationHandler from "../useNavigationHandler";
+import { getRegisterAtom, removeRegisterAtom } from "atoms/registerAtom";
 
 type credentialsType = {
   email: string;
@@ -17,11 +14,13 @@ type credentialsType = {
 function useAuthentication() {
   const [authStatus, setAuthStatus] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  
+
   const { handleLink } = useNavigationHandler();
 
-  const [jwtData, setJwt] = useAtom(authenticateAtom);
-  const [registerData, setRegister] = useAtom(registerAtom);
+  const [, authenticate] = useAtom(authenticateAtom);
+  const [, removeSecret] = useAtom(removeSecretAtom);
+  const [, getRegisterData] = useAtom(getRegisterAtom);
+  const [, removeRegister] = useAtom(removeRegisterAtom);
 
   const [credentials, setCredentials] = useState<credentialsType>({
     email: "",
@@ -40,44 +39,36 @@ function useAuthentication() {
     try {
       setIsProcessing(true);
       setAuthStatus("VERIFYING");
-      const [data, error] = await authenticateUser(
-        parameter.email,
-        parameter.password
-      );
-      const jwtToken = data?.token;
+      const [jwt, error] = await authenticate({
+        email: parameter.email,
+        password: parameter.password,
+      });
 
-      if (jwtToken) {
-        setJwt(jwtToken);
-        const [register, error] = await getRegister(jwtToken);
-        const registerData = register?.data;
-        if (jwtToken && registerData) {
-          setRegister({ data: registerData });
-          setIsProcessing(false);
+      if (jwt) {
+        const [data, error] = await getRegisterData();
+        if (jwt && data?.data) {
           setAuthStatus("SUCCESS");
           setTimeout(() => {
             handleLink("/");
           }, 500);
         } else {
-          setIsProcessing(false);
           setAuthStatus("INCORRECT_CREDENTIALS");
           console.error(error);
         }
       } else {
-        setIsProcessing(false);
         setAuthStatus("AUTH_FAILED");
         console.error(error);
       }
     } catch (error) {
-      setIsProcessing(false);
       setAuthStatus("SYSTEM_ERROR");
       console.error(error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const onSignOut = () => {
-    setJwt(null);
-    setRegister(null);
-    if (!jwtData && !registerData) {
+    if (removeSecret() && removeRegister()) {
       handleLink("/");
     }
   };
