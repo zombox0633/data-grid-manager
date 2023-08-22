@@ -1,12 +1,16 @@
-import axios from "axios";
+import client from "config/axiosConfig";
 
 import { onHandleErrorFromAPI } from "config/serviceApi";
 
+import { AxiosReturn } from "config/serviceApi.type";
 import { AuthenticationType } from "./authentication.type";
 
-async function authenticateUser(email:string,password:string) {
+async function authenticateUser(
+  email: string,
+  password: string
+): AxiosReturn<AuthenticationType> {
   try {
-    const response = await axios.post<AuthenticationType>("http://localhost:3000/api/users/login", {
+    const response = await client.post<AuthenticationType>("/users/login", {
       email: email,
       password: password,
     });
