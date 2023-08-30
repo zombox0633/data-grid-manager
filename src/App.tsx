@@ -6,35 +6,48 @@ import "./style/index.css";
 import { getRegisterAtom } from "atoms/registerAtom";
 import { secretAtom } from "atoms/authenticateAtom";
 
+import GlobalLoading from "components/GlobalLoading";
 import Layout from "src/components/Layout";
+import PrivateRoute from "components/PrivateRoute";
+
 import HomePage from "src/pages/HomePage";
 import SignInPage from "src/pages/SignInPage";
 import ErrorPage from "src/pages/ErrorPage";
-import GlobalLoading from "components/GlobalLoading";
+import TestPage from "pages/TestPage";
+import DataManagementPage from "pages/DataManagementPage";
 
 function App() {
+  const [secret] = useAtom(secretAtom);
   const [, getRegister] = useAtom(getRegisterAtom);
-  const [jwt] = useAtom(secretAtom);
 
-  const getRegisterWithJwt = useCallback(async () => {
+  const getRegisterWithSecret = useCallback(async () => {
     await getRegister();
   }, [getRegister]);
 
   useEffect(() => {
-    let isMounted = false;
-    if (jwt) {
-      !isMounted && getRegisterWithJwt();
+    let isMounted = true;
+
+    if (secret && isMounted) {
+      getRegisterWithSecret();
     }
     return () => {
-      isMounted = true;
+      isMounted = false;
     };
-  }, [jwt, getRegisterWithJwt]);
-
+  }, [secret, getRegisterWithSecret]);
+ 
   return (
     <GlobalLoading>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} caseSensitive />
+          <Route path="test" element={<TestPage />} caseSensitive />
+          <Route element={<PrivateRoute />}>
+            <Route
+              path="data-management"
+              element={<DataManagementPage />}
+              caseSensitive
+            />
+          </Route>
         </Route>
         <Route path="sign-in" element={<SignInPage />} caseSensitive />
         <Route path="*" element={<ErrorPage />} />
