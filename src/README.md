@@ -29,6 +29,8 @@ https://fireship.io/lessons/wavy-backgrounds/
 
 show error wed  https://www.appasaurus.co/
 
+Design better data tables
+https://coyleandrew.medium.com/design-better-data-tables-4ecc99d23356
 
 jotai
 

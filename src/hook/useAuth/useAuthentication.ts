@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
-import { authenticateAtom, removeSecretAtom } from "atoms/authenticateAtom";
+import {
+  authenticateAtom,
+  authenticateErrorAtom,
+  removeSecretAtom,
+} from "atoms/authenticateAtom";
 
 import useNavigationHandler from "../useNavigationHandler";
-import { getRegisterAtom, removeRegisterAtom } from "atoms/registerAtom";
+import {
+  getRegisterAtom,
+  registerErrorAtom,
+  removeRegisterAtom,
+} from "atoms/registerAtom";
 
 type credentialsType = {
   email: string;
@@ -18,8 +26,11 @@ function useAuthentication() {
   const { handleLink } = useNavigationHandler();
 
   const [, authenticate] = useAtom(authenticateAtom);
+  const [authenticateError] = useAtom(authenticateErrorAtom);
   const [, removeSecret] = useAtom(removeSecretAtom);
+
   const [, getRegisterData] = useAtom(getRegisterAtom);
+  const [registerError] = useAtom(registerErrorAtom);
   const [, removeRegister] = useAtom(removeRegisterAtom);
 
   const [credentials, setCredentials] = useState<credentialsType>({
@@ -39,25 +50,25 @@ function useAuthentication() {
     try {
       setIsProcessing(true);
       setAuthStatus("VERIFYING");
-      const [jwt, error] = await authenticate({
+      const isAuthenticate = await authenticate({
         email: parameter.email,
         password: parameter.password,
       });
 
-      if (jwt) {
-        const [data, error] = await getRegisterData();
-        if (jwt && data?.data) {
+      if (isAuthenticate) {
+        const getRegister = await getRegisterData();
+        if (getRegister) {
           setAuthStatus("SUCCESS");
           setTimeout(() => {
             handleLink("/");
           }, 500);
         } else {
           setAuthStatus("INCORRECT_CREDENTIALS");
-          console.error(error);
+          console.error(registerError);
         }
       } else {
         setAuthStatus("AUTH_FAILED");
-        console.error(error);
+        console.error(authenticateError);
       }
     } catch (error) {
       setAuthStatus("SYSTEM_ERROR");

@@ -14,25 +14,23 @@ export const authenticateAtom = atom(
     get,
     set,
     { email, password }: { email: string; password: string }
-  ): Promise<[string | null, null | string]> => {
+  ): Promise<boolean> => {
     const [data, error] = await authenticateUser(email, password);
-    if (data && data.token) {
-      const jwt = data.token;
-      localStorage.setItem("secret", jwt);
-      set(secretAtom, jwt);
-      return [jwt, null];
+    if (data && data?.token) {
+      set(secretAtom, data.token);
+      localStorage.setItem("secret", data.token);
+      return true;
     } else {
-      localStorage.removeItem("secret");
-      set(secretAtom, null);
       set(authenticateErrorAtom, error);
-      return [null, error];
+      return false;
     }
   }
 );
 
-export const removeSecretAtom = atom(null, (get, set):boolean => {
+export const removeSecretAtom = atom(null, (get, set): boolean => {
   set(secretAtom, null);
-  return true
+  localStorage.removeItem("secret");
+  return true;
 });
 
 // ตรง get) => get(secretAtom) ถ้ามีจะมีผลในการรีเรนเดอร์ใหม่ของ component ที่ใช้งาน authenticateAtom เมื่อ secretAtom มีการเปลี่ยนแปลง

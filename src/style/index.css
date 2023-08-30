@@ -27,6 +27,9 @@
     @apply text-5xl font-bold;
   }
   h3 {
+    @apply text-4xl font-bold;
+  }
+  h4 {
     @apply text-3xl font-bold;
   }
 }
@@ -64,6 +67,18 @@
   /* HomePage */
   .home_page__body {
     @apply background-color__transition snap-y snap-mandatory w-screen h-screen overflow-y-auto;
+  }
+
+  /* Table */
+  .thead{
+    @apply px-4 py-2
+  }
+
+  .td__normal_state{
+    @apply pl-4 py-2 border border-eerieBlack text-lg text-left
+  }
+  .td__abnormal_state{
+    @apply w-16 p-8 text-center text-2xl font-semibold
   }
 
   /* GlobalLoading */
