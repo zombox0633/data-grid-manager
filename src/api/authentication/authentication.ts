@@ -5,10 +5,15 @@ import { AxiosReturn } from "config/serviceApi.type";
 
 import { AuthenticationType } from "./authentication.type";
 
-async function authenticateUser(
-  email: string,
-  password: string
-): AxiosReturn<AuthenticationType> {
+type authenticateUserType = {
+  email: string;
+  password: string;
+};
+
+async function authenticateUser({
+  email,
+  password,
+}: authenticateUserType): AxiosReturn<AuthenticationType> {
   try {
     const response = await client.post<AuthenticationType>("/users/login", {
       email: email,

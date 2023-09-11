@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import getProducts from "api/products/products";
+import getProducts from "api/products/getProducts";
 import { ProductsType } from "api/products/products.type";
 
 export const productsAtom = atom<ProductsType | null>(null);
@@ -20,7 +20,7 @@ export const getProductsAtom = atom(
   }
 );
 
-export const removeRegisterAtom = atom(null, (get, set): boolean => {
+export const removeProductsAtom = atom(null, (get, set): boolean => {
   set(productsAtom, null);
   return true;
 });

@@ -5,16 +5,16 @@ import {
   productsAtom,
   productsErrorAtom,
   getProductsAtom,
-} from "atoms/productsAtom";
+} from "atoms/productAtom/getProductsAtom";
 
 import { ProductsType } from "api/products/products.type";
 
-type UseProductsReturnDataType = [
+type UseGetProductsReturnDataType = [
   productsData: ProductsType | null,
-  productsData: null | string
+  productsError: null | string
 ];
 
-function useProducts() {
+function useGetProducts() {
   const [, getProducts] = useAtom(getProductsAtom);
   const [productsData] = useAtom(productsAtom);
   const [productsError] = useAtom(productsErrorAtom);
@@ -24,18 +24,12 @@ function useProducts() {
   }, [getProducts]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted && !productsData) {
+    if (!productsData) {
       getProductsData();
     }
-
-    return () => {
-      isMounted = false;
-    };
   }, [productsData, getProductsData]);
 
-  function loadProductsData(): UseProductsReturnDataType {
+  function loadProductsData(): UseGetProductsReturnDataType {
     if (productsData) {
       return [productsData, null];
     }
@@ -51,4 +45,4 @@ function useProducts() {
   };
 }
 
-export default useProducts;
+export default useGetProducts;

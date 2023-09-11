@@ -5,13 +5,12 @@ import {
   categoryAtom,
   categoryErrorAtom,
   getCategoryAtom,
-} from "atoms/categoryAtom";
-
+} from "atoms/categoryAtom/getCategoryAtom";
 import { CategoryType } from "api/category/category.type";
 
 type UseCatalogReturnDataType = [
   categoryData: CategoryType | null,
-  categoryData: null | string
+  categoryError: null | string
 ];
 
 function useCategory() {
@@ -24,23 +23,17 @@ function useCategory() {
   }, [getCategory]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted && !categoryData) {
+    if (!categoryData) {
       getCategoryData();
     }
-
-    return () => {
-      isMounted = false;
-    };
   }, [categoryData, getCategoryData]);
 
-  function loadCategoryData():UseCatalogReturnDataType {
+  function loadCategoryData(): UseCatalogReturnDataType {
     if (categoryData) {
       return [categoryData, null];
     }
     if (categoryError) {
-      console.warn(categoryError)
+      console.warn(categoryError);
       return [null, categoryError];
     }
     return [null, null];

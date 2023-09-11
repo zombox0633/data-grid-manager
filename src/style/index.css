@@ -54,9 +54,17 @@
     hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
   }
 
+  .table__button{
+    @apply w-16 m-2 py-2 rounded-lg font-semibold active:translate-y-[1px]
+  }
+
   .sign_in__button {
     @apply h-12 rounded-3xl bg-mint text-lg text-floralWhite font-bold 
     hover:drop-shadow-xl active:translate-y-[1px] disabled:bg-mint/60;
+  }
+
+  .dropdown_profile__button{
+    @apply h-8 rounded-xl bg-mint text-fuchsia-50 font-semibold hover:drop-shadow-2xl active:translate-y-[1px]
   }
 
   /* input */
@@ -75,7 +83,7 @@
   }
 
   .td__normal_state{
-    @apply pl-4 py-2 border border-eerieBlack text-lg text-left
+    @apply px-4 py-2 border border-eerieBlack text-lg text-left
   }
   .td__abnormal_state{
     @apply w-16 p-8 text-center text-2xl font-semibold

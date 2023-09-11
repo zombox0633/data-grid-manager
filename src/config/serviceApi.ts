@@ -17,7 +17,7 @@ export const onHandleErrorFromAPI = (error: unknown): [null, string] => {
       case 500:
         return [null, "Internal Server Error. Please try again later."];
       default:
-        return [null, error?.response?.data?.error?.message ?? "ERROR"];
+        return [null, error?.response?.data?.error?.message ?? "Unknown errors"];
     }
   } else {
     return [null, (error as Error).message];

@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import NavigationBar from "./NavigationBar";
+import NavigationBar from "./navigation/NavigationBar";
 
 function Layout() {
   return (

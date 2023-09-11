@@ -1,25 +1,76 @@
-import useProducts from "hook/getData/product/useProducts";
+import { useAtom } from "jotai";
+import TableHead from "./TableHead";
+import TableStateRow from "./TableStateRow";
+import AddItemRow from "./AddItemRow";
+import ItemRow from "./ItemRow";
 
-import Table, { HeaderType } from "./Table";
+import { registerAtom } from "atoms/registerAtom";
+import useGetProducts from "hook/customAtomData/product/useGetProducts";
+import useProductActions from "hook/customAtomData/product/useProductActions";
+import useCategory from "hook/customAtomData/category/useGetCategory";
+import useGetUsers from "hook/customAtomData/user/useGetUsers";
+
+import { productHeaders } from "src/constraint/PRODUCT_TABLE";
 import { ProductsDataType } from "api/products/products.type";
 
-function ProductsTable() {
-  const { loadProductsData } = useProducts();
-  const [data, error] = loadProductsData();
+export type ProductValuesType = Partial<ProductsDataType>;
+//Partial คือการระบุบ properties ที่จะใช้แค่บางส่วน
 
-  const productHeaders: HeaderType<ProductsDataType>[] = [
-    { key: "id", label: "id", action:false },
-    { key: "name", label: "name", action:true },
-    { key: "category_id", label: "category", action:true },
-    { key: "price", label: "price", action:true },
-    { key: "quantity", label: "quantity", action:true },
-    { key: "last_op_id", label: "latest Update", action:false},
-  ];
+function ProductsTable() {
+  const [register] = useAtom(registerAtom);
+
+  const { handleAddProduct, handleUpdateProduct, handleDeleteProduct } =
+    useProductActions();
+
+  const { loadProductsData } = useGetProducts();
+  const [productData, productError] = loadProductsData();
+  const { loadCategoryData } = useCategory();
+  const [categoryData] = loadCategoryData();
+  const { loadUserData } = useGetUsers();
+  const [usersData] = loadUserData();
 
   return (
     <div>
       <h4 className="mb-4">Product</h4>
-      <Table headers={productHeaders} data={data?.data || []} error={error} />
+      <table
+        className={`${
+          !productData || productData?.data?.length === 0
+            ? "h-[60vh]"
+            : "h-auto"
+        } w-[90vw] border border-eerieBlack border-collapse overflow-hidden`}
+      >
+        <TableHead headers={productHeaders} />
+        <tbody>
+          {productError && (
+            <TableStateRow
+              status="error"
+              error={productError}
+              colSpan={productHeaders.length}
+            />
+          )}
+          {!productData && !productError && (
+            <TableStateRow status="loading" colSpan={productHeaders.length} />
+          )}
+          {productData && productData?.data?.length === 0 && !productError && (
+            <TableStateRow status="empty" colSpan={productHeaders.length} />
+          )}
+          <AddItemRow
+            register={register?.data ?? null}
+            handleAddProduct={handleAddProduct}
+          />
+          {productData &&
+            productData.data.map((product) => (
+              <ItemRow
+                register={register?.data ?? null}
+                product={product}
+                usersData={usersData}
+                categoryData={categoryData}
+                handleUpdateProduct={handleUpdateProduct}
+                handleDeleteProduct={handleDeleteProduct}
+              />
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 }

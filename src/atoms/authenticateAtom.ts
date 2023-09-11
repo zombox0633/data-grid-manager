@@ -13,9 +13,9 @@ export const authenticateAtom = atom(
   async (
     get,
     set,
-    { email, password }: { email: string; password: string }
+    { email, password }: { email: string, password: string }
   ): Promise<boolean> => {
-    const [data, error] = await authenticateUser(email, password);
+    const [data, error] = await authenticateUser({email, password});
     if (data && data?.token) {
       set(secretAtom, data.token);
       localStorage.setItem("secret", data.token);

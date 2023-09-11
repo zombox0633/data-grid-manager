@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import getCategory from "api/category/category";
+import getCategory from "api/category/getCategory";
 import { CategoryType } from "api/category/category.type";
 
 export const categoryAtom = atom<CategoryType | null>(null);
