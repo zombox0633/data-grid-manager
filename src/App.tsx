@@ -3,9 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { useAtom } from "jotai";
 import "./style/index.css";
 
-import { getRegisterAtom } from "atoms/registerAtom";
-import { secretAtom } from "atoms/authenticateAtom";
-
 import GlobalLoading from "components/GlobalLoading";
 import Layout from "src/components/Layout";
 import PrivateRoute from "components/PrivateRoute";
@@ -15,6 +12,11 @@ import SignInPage from "src/pages/SignInPage";
 import ErrorPage from "src/pages/ErrorPage";
 import TestPage from "pages/TestPage";
 import DataManagementPage from "pages/DataManagementPage";
+
+import { ToastContainer } from "react-toastify";
+
+import { getRegisterAtom } from "atoms/registerAtom";
+import { secretAtom } from "atoms/authenticateAtom";
 
 function App() {
   const [secret] = useAtom(secretAtom);
@@ -37,6 +39,7 @@ function App() {
  
   return (
     <GlobalLoading>
+      <ToastContainer/>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} caseSensitive />

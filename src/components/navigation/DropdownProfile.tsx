@@ -37,7 +37,7 @@ function DropdownProfile() {
           </span>
           <button className="dropdown_profile__button">Profile</button>
           <button className="dropdown_profile__button" onClick={onSignOut}>
-            Sign in
+            Sign out
           </button>
         </div>
       </div>

@@ -9,3 +9,7 @@ export const handleDIVScrollY = (divRef: React.RefObject<HTMLDivElement>) => {
 export const copyToClipboard = (text:string) => {
   navigator.clipboard.writeText(text)
 }
+
+export const formatNumber = (number: number) => {
+  return new Intl.NumberFormat().format(number)
+}

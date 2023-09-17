@@ -15,6 +15,13 @@
   --oldGold-color: #dbc066;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 @layer base {
   body {
     @apply block m-0 p-0 box-border outline-2 border-eerieBlack bg-floralWhite text-eerieBlack font-raleway;
@@ -79,11 +86,11 @@
 
   /* Table */
   .thead{
-    @apply px-4 py-2
+    @apply px-4 py-4
   }
 
   .td__normal_state{
-    @apply px-4 py-2 border border-eerieBlack text-lg text-left
+    @apply h-20 px-4 py-2 border border-eerieBlack text-lg text-left
   }
   .td__abnormal_state{
     @apply w-16 p-8 text-center text-2xl font-semibold

@@ -1,5 +1,7 @@
 import { useAtom } from "jotai";
 
+import { showToast } from "style/toast";
+
 import {
   updateProductAtom,
   updateProductErrorAtom,
@@ -12,6 +14,8 @@ import {
   deleteProductAtom,
   deleteProductErrorAtom,
 } from "atoms/productAtom/deleteProductAtom";
+
+import useErrorHandlerApi from "hook/useErrorHandlerApi";
 
 export type AddProductType = {
   nameProduct: string;
@@ -38,6 +42,10 @@ function useProductActions() {
   const [, deleteProduct] = useAtom(deleteProductAtom);
   const [deleteProductError] = useAtom(deleteProductErrorAtom);
 
+  useErrorHandlerApi(addProductError);
+  useErrorHandlerApi(updateProductError);
+  useErrorHandlerApi(deleteProductError);
+
   const handleAddProduct = async ({
     nameProduct,
     category_id,
@@ -53,11 +61,16 @@ function useProductActions() {
         quantity: quantityProduct,
         last_op_id: user_id,
       });
-      if (!success) {
-        throw new Error(`Add failed for : ${addProductError}`);
+      if (success) {
+        showToast("success", `${nameProduct} added successfully!`);
+        return true;
       }
+      throw new Error(`Add failed for : ${addProductError}`);
     } catch (error) {
+      // const errMsg = (error as Error).message;
+      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
+      return false;
     }
   };
 
@@ -78,22 +91,32 @@ function useProductActions() {
         quantity: quantityProduct,
         last_op_id: user_id,
       });
-      if (!success) {
-        throw new Error(`Update failed for : ${updateProductError}`);
+      if (success) {
+        showToast("success", `${nameProduct} updated successfully!`);
+        return true;
       }
+      throw new Error(`Update failed for : ${updateProductError}`);
     } catch (error) {
+      // const errMsg = (error as Error).message;
+      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
+      return false;
     }
   };
 
-  const handleDeleteProduct = async (product_id:string) => {
+  const handleDeleteProduct = async (product_id: string) => {
     try {
       const success = await deleteProduct({ id: product_id });
-      if (!success) {
-        throw new Error(`Delete failed for : ${deleteProductError}`);
+      if (success) {
+        showToast("success", `${product_id} deleted successfully!`);
+        return true;
       }
+      throw new Error(`Delete failed for : ${deleteProductError}`);
     } catch (error) {
+      // const errMsg = (error as Error).message;
+      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
+      return false;
     }
   };
 

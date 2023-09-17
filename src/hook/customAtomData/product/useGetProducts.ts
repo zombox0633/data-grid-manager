@@ -14,7 +14,7 @@ type UseGetProductsReturnDataType = [
   productsError: null | string
 ];
 
-function useGetProducts() {
+function useGetProducts(refreshKey: number) {
   const [, getProducts] = useAtom(getProductsAtom);
   const [productsData] = useAtom(productsAtom);
   const [productsError] = useAtom(productsErrorAtom);
@@ -24,10 +24,10 @@ function useGetProducts() {
   }, [getProducts]);
 
   useEffect(() => {
-    if (!productsData) {
+    if (!productsData || refreshKey) {
       getProductsData();
     }
-  }, [productsData, getProductsData]);
+  }, [refreshKey, productsData, getProductsData]);
 
   function loadProductsData(): UseGetProductsReturnDataType {
     if (productsData) {

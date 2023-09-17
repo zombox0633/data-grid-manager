@@ -14,7 +14,7 @@ function TableHead<T>({ headers }: TableHeadType<T>) {
               {header.label.charAt(0).toUpperCase() + header.label.slice(1)}
             </th>
           ))}
-        <th className="thead w-60">Management</th>
+        <th className="bg-eerieBlack thead w-60">Management</th>
       </tr>
     </thead>
   );
