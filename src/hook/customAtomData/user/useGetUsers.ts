@@ -4,9 +4,11 @@ import { useAtom } from "jotai";
 import {
   getUsersAtom,
   usersAtom,
+  usersCancelTokenAtom,
   usersErrorAtom,
 } from "atoms/userAtom/getUsersAtom";
 import { UserType } from "api/user/users.type";
+import useCancelToken from "hook/useCancelToken";
 
 type UseUserReturnDataType = [
   userData: UserType | null,
@@ -17,6 +19,7 @@ function useGetUsers() {
   const [, getUsers] = useAtom(getUsersAtom);
   const [userData] = useAtom(usersAtom);
   const [userError] = useAtom(usersErrorAtom);
+  const [usersCancel] = useAtom(usersCancelTokenAtom);
 
   const getUsersData = useCallback(async () => {
     await getUsers();
@@ -27,6 +30,8 @@ function useGetUsers() {
       getUsersData();
     }
   }, [userData, getUsersData]);
+
+  useCancelToken(usersCancel);
 
   const loadUserData = (): UseUserReturnDataType => {
     if (userData) {

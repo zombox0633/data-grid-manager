@@ -1,3 +1,4 @@
+import { CancelTokenSource } from "axios";
 import client from "config/axiosConfig";
 
 import { onHandleErrorFromAPI } from "config/serviceApi";
@@ -11,6 +12,7 @@ type addProductType = {
   price: number;
   quantity: number;
   last_op_id: string;
+  cancelToken?: CancelTokenSource;
 };
 
 async function addProduct({
@@ -19,15 +21,22 @@ async function addProduct({
   price,
   quantity,
   last_op_id,
+  cancelToken,
 }: addProductType): AxiosReturn<ProductsType> {
   try {
-    const response = await client.post<ProductsType>(`/products`, {
-      name: name,
-      category_id: category_id,
-      price: price,
-      quantity: quantity,
-      last_op_id: last_op_id,
-    });
+    const response = await client.post<ProductsType>(
+      `/products`,
+      {
+        name: name,
+        category_id: category_id,
+        price: price,
+        quantity: quantity,
+        last_op_id: last_op_id,
+      },
+      {
+        cancelToken: cancelToken?.token,
+      }
+    );
     return [response.data, null];
   } catch (error) {
     return onHandleErrorFromAPI(error);

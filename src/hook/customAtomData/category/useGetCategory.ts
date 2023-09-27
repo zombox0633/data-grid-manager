@@ -3,20 +3,23 @@ import { useAtom } from "jotai";
 
 import {
   categoryAtom,
+  categoryCancelTokenAtom,
   categoryErrorAtom,
   getCategoryAtom,
 } from "atoms/categoryAtom/getCategoryAtom";
 import { CategoryType } from "api/category/category.type";
+import useCancelToken from "hook/useCancelToken";
 
 type UseCatalogReturnDataType = [
   categoryData: CategoryType | null,
   categoryError: null | string
 ];
 
-function useCategory() {
+function useGetCategory() {
   const [, getCategory] = useAtom(getCategoryAtom);
   const [categoryData] = useAtom(categoryAtom);
   const [categoryError] = useAtom(categoryErrorAtom);
+  const [categoryCancel] = useAtom(categoryCancelTokenAtom);
 
   const getCategoryData = useCallback(async () => {
     await getCategory();
@@ -27,6 +30,8 @@ function useCategory() {
       getCategoryData();
     }
   }, [categoryData, getCategoryData]);
+
+  useCancelToken(categoryCancel);
 
   function loadCategoryData(): UseCatalogReturnDataType {
     if (categoryData) {
@@ -44,4 +49,4 @@ function useCategory() {
   };
 }
 
-export default useCategory;
+export default useGetCategory;

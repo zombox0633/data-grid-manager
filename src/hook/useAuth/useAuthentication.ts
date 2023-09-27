@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 
 import {
   authenticateAtom,
+  authenticateCancelTokenAtom,
   authenticateErrorAtom,
   removeSecretAtom,
 } from "atoms/authenticateAtom";
@@ -10,9 +11,11 @@ import {
 import useNavigationHandler from "../useNavigationHandler";
 import {
   getRegisterAtom,
+  registerCancelTokenAtom,
   registerErrorAtom,
   removeRegisterAtom,
 } from "atoms/registerAtom";
+import useCancelToken from "hook/useCancelToken";
 
 type credentialsType = {
   email: string;
@@ -28,15 +31,20 @@ function useAuthentication() {
   const [, authenticate] = useAtom(authenticateAtom);
   const [authenticateError] = useAtom(authenticateErrorAtom);
   const [, removeSecret] = useAtom(removeSecretAtom);
+  const [authenticateCancel] = useAtom(authenticateCancelTokenAtom);
 
   const [, getRegisterData] = useAtom(getRegisterAtom);
   const [registerError] = useAtom(registerErrorAtom);
   const [, removeRegister] = useAtom(removeRegisterAtom);
+  const [registerCancel] = useAtom(registerCancelTokenAtom);
 
   const [credentials, setCredentials] = useState<credentialsType>({
     email: "",
     password: "",
   });
+
+  useCancelToken(authenticateCancel);
+  useCancelToken(registerCancel);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

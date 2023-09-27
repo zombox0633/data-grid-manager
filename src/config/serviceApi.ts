@@ -3,6 +3,9 @@ import axios from "axios";
 import { APIResponseErrorType } from "./serviceApi.type";
 
 export const onHandleErrorFromAPI = (error: unknown): [null, string] => {
+  if(axios.isCancel(error)){
+    return [null, "Request was cancelled"]
+  }
   if (axios.isAxiosError<APIResponseErrorType>(error)) {
     const status = error.response?.status;
     switch (status) {

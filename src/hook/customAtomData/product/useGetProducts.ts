@@ -5,7 +5,9 @@ import {
   productsAtom,
   productsErrorAtom,
   getProductsAtom,
+  getProductsCancelTokenAtom,
 } from "atoms/productAtom/getProductsAtom";
+import useCancelToken from "hook/useCancelToken";
 
 import { ProductsType } from "api/products/products.type";
 
@@ -14,20 +16,21 @@ type UseGetProductsReturnDataType = [
   productsError: null | string
 ];
 
-function useGetProducts(refreshKey: number) {
+function useGetProducts(refreshKey?: number) {
   const [, getProducts] = useAtom(getProductsAtom);
   const [productsData] = useAtom(productsAtom);
   const [productsError] = useAtom(productsErrorAtom);
+  const [cancelTokenSource] = useAtom(getProductsCancelTokenAtom);
 
   const getProductsData = useCallback(async () => {
     await getProducts();
   }, [getProducts]);
 
   useEffect(() => {
-    if (!productsData || refreshKey) {
-      getProductsData();
-    }
-  }, [refreshKey, productsData, getProductsData]);
+    getProductsData();
+  }, [refreshKey, getProductsData]);
+
+  useCancelToken(cancelTokenSource);
 
   function loadProductsData(): UseGetProductsReturnDataType {
     if (productsData) {

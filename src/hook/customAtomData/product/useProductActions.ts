@@ -4,18 +4,22 @@ import { showToast } from "style/toast";
 
 import {
   updateProductAtom,
+  updateProductCancelTokenAtom,
   updateProductErrorAtom,
 } from "atoms/productAtom/updateProductAtom";
 import {
   addProductAtom,
+  addProductCancelTokenAtom,
   addProductErrorAtom,
 } from "atoms/productAtom/addProductAtom";
 import {
   deleteProductAtom,
+  deleteProductCancelTokenAtom,
   deleteProductErrorAtom,
 } from "atoms/productAtom/deleteProductAtom";
 
 import useErrorHandlerApi from "hook/useErrorHandlerApi";
+import useCancelToken from "hook/useCancelToken";
 
 export type AddProductType = {
   nameProduct: string;
@@ -37,10 +41,19 @@ export type UpdateProductType = {
 function useProductActions() {
   const [, addProduct] = useAtom(addProductAtom);
   const [addProductError] = useAtom(addProductErrorAtom);
+  const [addProductCancel] = useAtom(addProductCancelTokenAtom);
+
   const [, updateProduct] = useAtom(updateProductAtom);
   const [updateProductError] = useAtom(updateProductErrorAtom);
+  const [updateProductCancel] = useAtom(updateProductCancelTokenAtom);
+
   const [, deleteProduct] = useAtom(deleteProductAtom);
   const [deleteProductError] = useAtom(deleteProductErrorAtom);
+  const [deleteProductCancel] = useAtom(deleteProductCancelTokenAtom);
+
+  useCancelToken(addProductCancel);
+  useCancelToken(updateProductCancel);
+  useCancelToken(deleteProductCancel);
 
   useErrorHandlerApi(addProductError);
   useErrorHandlerApi(updateProductError);
