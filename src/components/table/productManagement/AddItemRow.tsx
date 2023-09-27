@@ -79,7 +79,7 @@ function AddItemRow({
             handleNewProductInputChange(header.key, e.target.value)
           }
           disabled={isDisabled}
-          className="w-full"
+          className="table__input"
         />
       );
     }

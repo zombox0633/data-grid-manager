@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { ProductValuesType } from "components/table/product/ProductsTable";
+import { ProductValuesType } from "components/table/productManagement/ProductsManagement";
 import { ProductsDataType } from "api/products/products.type";
 import { RegisterType } from "api/register/register.type";
 import { UpdateProductType } from "hook/customAtomData/product/useProductActions";
@@ -33,8 +33,8 @@ function useProductEditing({product, handleUpdateProduct, handleDeleteProduct, r
       product_id: product.id,
       nameProduct: editingValues.name,
       category_id: editingValues.category_id,
-      priceProduct: Number(editingValues.price),
-      quantityProduct: Number(editingValues.quantity),
+      priceProduct: editingValues.price,
+      quantityProduct: editingValues.quantity,
       user_id: register?.data.id ?? "",
     });
 
@@ -75,8 +75,11 @@ function useProductEditing({product, handleUpdateProduct, handleDeleteProduct, r
 
   const handleEditInputChange = (
     key: keyof ProductsDataType,
-    value: string
+    value: string | number
   ) => {
+    if(key === "price" || key === "quantity"){
+      value = Number(value)
+    }
     setEditingValues((prevValues) => ({
       ...prevValues,
       [key]: value,

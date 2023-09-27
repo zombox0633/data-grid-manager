@@ -80,7 +80,7 @@ function ItemRow({
           defaultValue={String(product[header.key])}
           disabled={isDisabled}
           onChange={(e) => handleEditInputChange(header.key, e.target.value)}
-          className="w-full"
+          className="table__input"
         />
       );
     }

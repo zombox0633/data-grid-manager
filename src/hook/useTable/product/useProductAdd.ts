@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { ProductValuesType } from "components/table/product/ProductsTable";
+import { ProductValuesType } from "components/table/productManagement/ProductsManagement";
 import { AddProductType } from "hook/customAtomData/product/useProductActions";
 import { ProductsDataType } from "api/products/products.type";
 import { RegisterType } from "api/register/register.type";
