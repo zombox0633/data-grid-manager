@@ -62,7 +62,11 @@ input::-webkit-inner-spin-button {
   }
 
   .table__button{
-    @apply w-16 m-2 py-2 rounded-lg font-semibold active:translate-y-[1px]
+    @apply w-16 m-2 py-2 rounded-lg font-semibold shadow-sm hover:shadow-md active:translate-y-[1px]
+  }
+
+  .table__small_button{
+    @apply w-8 h-8 rounded-md hover:shadow-md hover:-translate-y-[0.5px] active:translate-y-0
   }
 
   .sign_in__button {
@@ -77,6 +81,10 @@ input::-webkit-inner-spin-button {
   /* input */
   .sign_in__input {
     @apply w-full h-12 px-2 bg-floralWhite text-lg font-bold focus:drop-shadow-xl;
+  }
+
+  .table__input {
+    @apply w-full border-2 border-eerieBlack/60 rounded-md px-2
   }
 
   /* HomePage */
@@ -96,6 +104,13 @@ input::-webkit-inner-spin-button {
     @apply w-16 p-8 text-center text-2xl font-semibold
   }
 
+  /* drop down */
+  .dropdown{
+    @apply absolute top-10 left-2 w-40 rounded-md bg-white shadow-lg z-40
+  }
+  .dropdown__link{
+    @apply block px-4 py-2 hover:bg-gray-200 hover:rounded-md
+  }
   /* GlobalLoading */
   .opacity__transition {
     transition: opacity 0.5s ease, visibility 0.5s ease;

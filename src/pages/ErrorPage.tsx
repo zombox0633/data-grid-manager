@@ -1,5 +1,3 @@
-import React from "react";
-
 function ErrorPage() {
   return (
     <div className=" flex flex-col justify-between h-[100vh] mx-[5%] py-[5%] overflow-hidden">

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAtom } from "jotai";
 import "./style/index.css";
@@ -22,18 +22,18 @@ function App() {
   const [secret] = useAtom(secretAtom);
   const [, getRegister] = useAtom(getRegisterAtom);
 
+  const isMounted = useRef<boolean>(true)
+
   const getRegisterWithSecret = useCallback(async () => {
     await getRegister();
   }, [getRegister]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (secret && isMounted) {
+    if (secret && isMounted.current) {
       getRegisterWithSecret();
     }
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
   }, [secret, getRegisterWithSecret]);
  
@@ -46,7 +46,7 @@ function App() {
           <Route path="test" element={<TestPage />} caseSensitive />
           <Route element={<PrivateRoute />}>
             <Route
-              path="data-management"
+              path="data-management/*"
               element={<DataManagementPage />}
               caseSensitive
             />
