@@ -57,6 +57,8 @@ function ItemRow({
     setRefreshKey,
   });
 
+  const { id: productId } = product;
+
   const renderTdProduct = (header: ProductHeaderType) => {
     const formattedValue =
       header.key === "price" || header.key === "quantity"
@@ -64,7 +66,7 @@ function ItemRow({
         : String(product[header.key]);
 
     if (
-      editingId === product.id &&
+      editingId === productId &&
       header.editable &&
       header.key !== "category_id"
     ) {
@@ -77,6 +79,7 @@ function ItemRow({
                 max: "9999",
               }
             : { type: "text" })}
+          aria-label={header.label}
           defaultValue={String(product[header.key])}
           disabled={isDisabled}
           onChange={(e) => handleEditInputChange(header.key, e.target.value)}
@@ -84,15 +87,16 @@ function ItemRow({
         />
       );
     }
-    if (header.key === "category_id" && editingId !== product.id) {
+    if (header.key === "category_id" && editingId !== productId) {
       return (
         categoryData?.data.find((cat) => cat.id === product[header.key])
           ?.name || product[header.key]
       );
     }
-    if (header.key === "category_id" && editingId === product.id) {
+    if (header.key === "category_id" && editingId === productId) {
       return (
         <select
+          aria-label="Select product category"
           value={editingValues.category_id || ""}
           onChange={(e) => handleEditInputChange(header.key, e.target.value)}
           disabled={isDisabled}
@@ -102,7 +106,11 @@ function ItemRow({
             Select category
           </option>
           {categoryData?.data.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option
+              key={category.id}
+              aria-label={header.label}
+              value={category.id}
+            >
               {category.name}
             </option>
           ))}
@@ -121,7 +129,7 @@ function ItemRow({
 
   return (
     <tr
-      key={product.id}
+      key={productId}
       className={rowColor % 2 === 0 ? "bg-white" : "bg-floralWhite"}
     >
       {productHeaders.map((header) => (

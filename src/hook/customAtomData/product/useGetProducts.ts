@@ -11,7 +11,7 @@ import useCancelToken from "hook/useCancelToken";
 
 import { ProductsType } from "api/products/products.type";
 
-type UseGetProductsReturnDataType = [
+export type UseGetProductsReturnDataType = [
   productsData: ProductsType | null,
   productsError: null | string
 ];

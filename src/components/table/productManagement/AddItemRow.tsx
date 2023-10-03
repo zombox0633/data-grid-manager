@@ -45,6 +45,7 @@ function AddItemRow({
     if (header.key === "category_id") {
       return (
         <select
+          aria-label="Select product category"
           value={newProduct.category_id || ""}
           onChange={(e) =>
             handleNewProductInputChange(header.key, e.target.value)
@@ -55,7 +56,11 @@ function AddItemRow({
             Select category
           </option>
           {categoryData?.data.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option
+              key={category.id}
+              aria-label={header.label}
+              value={category.id}
+            >
               {category.name}
             </option>
           ))}
@@ -71,6 +76,7 @@ function AddItemRow({
                 max: "9999",
               }
             : { type: "text" })}
+          aria-label={header.label}
           value={String(newProduct[header.key] || "")}
           placeholder={
             header.label.charAt(0).toUpperCase() + header.label.slice(1)

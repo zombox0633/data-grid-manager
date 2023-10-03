@@ -1,5 +1,4 @@
 import DefaultButton from "components/button/DefaultButton";
-
 import { ProductsDataType } from "api/products/products.type";
 
 type ProductActionsType = {
@@ -32,6 +31,7 @@ function ProductActions({
     return (
       <>
         <DefaultButton
+          aria-label="Confirm edit action"
           onClick={handleConfirmEdit}
           addClassName="table__button bg-green-400  disabled:bg-green-400/70"
           disabled={isDisabled}
@@ -39,6 +39,7 @@ function ProductActions({
           Submit
         </DefaultButton>
         <DefaultButton
+          aria-label="Cancel edit action"
           onClick={handleCancelEdit}
           addClassName="table__button bg-red-500 disabled:bg-red-500/70"
         >
@@ -51,6 +52,7 @@ function ProductActions({
     return (
       <>
         <DefaultButton
+          aria-label="Confirm delete action"
           onClick={handleConfirmDelete}
           disabled={isDisabled}
           addClassName="table__button bg-green-400  disabled:bg-green-400/70"
@@ -58,6 +60,7 @@ function ProductActions({
           Confirm
         </DefaultButton>
         <DefaultButton
+          aria-label="Cancel delete action"
           onClick={handleCancelDelete}
           addClassName="table__button bg-red-500 disabled:bg-red-500/70"
         >
@@ -69,12 +72,14 @@ function ProductActions({
   return (
     <>
       <DefaultButton
+        aria-label="Click to edit"
         onClick={handleEditClick}
-        addClassName="table__button bg-yellow-300 disabled:bg-yellow-300/70 text-w"
+        addClassName="table__button bg-yellow-300 disabled:bg-yellow-300/70 "
       >
         Edit
       </DefaultButton>
       <DefaultButton
+        aria-label="Click to delete"
         onClick={handleDeleteClick}
         addClassName="table__button bg-red-500 disabled:bg-red-500/70"
       >
