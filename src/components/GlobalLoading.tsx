@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, memo } from "react";
 
 import { loadingAtom } from "atoms/loadingAtom";
 import { useAtom } from "jotai";
@@ -36,4 +36,4 @@ function GlobalLoading({ children }: PropsWithChildren) {
   );
 }
 
-export default GlobalLoading;
+export default memo(GlobalLoading);

@@ -3,7 +3,7 @@ import { useState, useEffect, memo } from "react";
 function Timer() {
   const [time, setTime] = useState<Date>(new Date());
 
-  useEffect(() => {
+  useEffect(() => {   
     const intervalId = setInterval(() => {
       setTime(new Date());
     }, 1000);
