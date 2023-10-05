@@ -1,22 +1,22 @@
-import { CategoryHeaders } from "src/constraint/CATEGORY_TABLE";
-import Table from "../Table";
+import { useState } from "react";
+import DataTable from "../DataTable";
+import useGetCategory from "hook/useDataTable/category/useGetCategory";
 
-import useGetCategory from "hook/customAtomData/category/useGetCategory";
+import { CategoryDataType } from "api/category/category.type";
+import { CategoryHeaders } from "src/constraint/CATEGORY_TABLE";
 
 function CategoryTable() {
-  const { loadCategoryData } = useGetCategory();
-  const [categoryData, categoryError] = loadCategoryData();
-  
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const { loadCategoryData } = useGetCategory(refreshKey);
+
   return (
     <div>
-      {categoryData?.data && (
-        <Table
-          nameTable="Category"
-          headers={CategoryHeaders}
-          data={categoryData.data}
-          error={categoryError}
-        />
-      )}
+      <DataTable<CategoryDataType>
+        nameTable={"Category"}
+        loadData={loadCategoryData}
+        tableHeaders={CategoryHeaders}
+        setRefreshKey={setRefreshKey}
+      />
     </div>
   );
 }

@@ -1,23 +1,23 @@
-import Table from "../Table";
+import { useState } from "react";
 
-import useGetProducts from "hook/customAtomData/product/useGetProducts";
+import DataTable from "../DataTable";
+
+import useGetProducts from "hook/useDataTable/product/useGetProducts";
 
 import { productHeaders } from "src/constraint/PRODUCT_TABLE";
+import { ProductsDataType } from "api/products/products.type";
 
 function ProductsTable() {
-  const { loadProductsData } = useGetProducts();
-  const [productData, productError] = loadProductsData();
-
+  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const { loadProductsData } = useGetProducts(refreshKey);
   return (
     <div>
-      {productData?.data && (
-        <Table
-          nameTable={"Product"}
-          headers={productHeaders}
-          data={productData?.data}
-          error={productError}
-        />
-      )}
+      <DataTable<ProductsDataType>
+        nameTable={"Products"}
+        loadData={loadProductsData}
+        tableHeaders={productHeaders}
+        setRefreshKey={setRefreshKey}
+      />
     </div>
   );
 }

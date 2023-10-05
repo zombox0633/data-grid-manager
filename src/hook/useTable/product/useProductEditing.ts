@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { ProductValuesType } from "components/table/productManagement/ProductsManagement";
 import { ProductsDataType } from "api/products/products.type";
 import { RegisterType } from "api/register/register.type";
-import { UpdateProductType } from "hook/customAtomData/product/useProductActions";
+import { UpdateProductType } from "hook/useDataTable/product/useProductActions";
 
 type useProductEditingType = {
   product: ProductsDataType;
@@ -31,7 +31,7 @@ function useProductEditing({product, handleUpdateProduct, handleDeleteProduct, r
     setIsDisabled(true);
     const success = await handleUpdateProduct({
       product_id: product.id,
-      nameProduct: editingValues.name,
+      nameProduct: editingValues.name ?? product.name,
       category_id: editingValues.category_id,
       priceProduct: editingValues.price,
       quantityProduct: editingValues.quantity,

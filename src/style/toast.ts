@@ -39,11 +39,11 @@ export const showToast = (
   message: string | null
 ) => {
   if (type === "success") {
-    toast.success(message, toastSuccess);
+    return toast.success(message, toastSuccess);
   }
   if (type === "warning") {
-    toast.warning(message, toastWarning);
+    return toast.warning(message, toastWarning);
   } else {
-    toast.error(message, toastError);
+    return toast.error(message, toastError);
   }
 };

@@ -21,7 +21,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-
 @layer base {
   body {
     @apply block m-0 p-0 box-border outline-2 border-eerieBlack bg-floralWhite text-eerieBlack font-raleway;
@@ -43,11 +42,11 @@ input::-webkit-inner-spin-button {
 
 @layer components {
   /* transition */
-  .background-color__transition{
+  .background-color__transition {
     transition: background-color 0.5s ease-in;
   }
-  .background_and_color__transition{
-    transition: background-color 0.2s ease-in, color 0.2s ease-out ;
+  .background_and_color__transition {
+    transition: background-color 0.2s ease-in, color 0.2s ease-out;
   }
 
   /* img */
@@ -61,12 +60,12 @@ input::-webkit-inner-spin-button {
     hover:bg-eerieBlack hover:text-white hover:drop-shadow-2xl active:translate-y-[1px];
   }
 
-  .table__button{
-    @apply w-16 m-2 py-2 rounded-lg font-semibold shadow-sm hover:shadow-md active:translate-y-[1px]
+  .table__button {
+    @apply w-16 m-2 py-2 rounded-lg font-semibold shadow-sm hover:shadow-md active:translate-y-[1px];
   }
 
-  .table__small_button{
-    @apply w-8 h-8 rounded-md hover:shadow-md hover:-translate-y-[0.5px] active:translate-y-0
+  .table__small_button {
+    @apply w-8 h-8 rounded-md hover:shadow-md hover:-translate-y-[0.5px] active:translate-y-0;
   }
 
   .sign_in__button {
@@ -74,17 +73,17 @@ input::-webkit-inner-spin-button {
     hover:drop-shadow-xl active:translate-y-[1px] disabled:bg-mint/60;
   }
 
-  .dropdown_profile__button{
-    @apply h-8 rounded-xl bg-mint text-fuchsia-50 font-semibold hover:drop-shadow-2xl active:translate-y-[1px]
+  .dropdown_profile__button {
+    @apply h-8 rounded-xl bg-mint text-fuchsia-50 font-semibold hover:drop-shadow-xl active:translate-y-[1px];
   }
 
   /* input */
   .sign_in__input {
-    @apply w-full h-12 px-2 bg-floralWhite text-lg font-bold focus:drop-shadow-xl;
+    @apply w-full h-12 px-2 border-2 rounded-md  border-eerieBlack/50 bg-floralWhite text-lg font-bold focus:shadow-xl;
   }
 
   .table__input {
-    @apply w-full border-2 border-eerieBlack/60 rounded-md px-2
+    @apply w-full px-2 border rounded-md  border-eerieBlack/50;
   }
 
   /* HomePage */
@@ -93,24 +92,29 @@ input::-webkit-inner-spin-button {
   }
 
   /* Table */
-  .thead{
-    @apply px-4 py-4
+  .thead {
+    @apply px-4 py-4;
   }
 
-  .td__normal_state{
-    @apply h-20 px-4 py-2 border border-eerieBlack text-lg text-left
+  .td__normal_state {
+    @apply h-20 px-4 py-2 border border-eerieBlack text-lg text-left;
   }
-  .td__abnormal_state{
-    @apply w-16 p-8 text-center text-2xl font-semibold
+  .td__abnormal_state {
+    @apply w-16 p-8 text-center text-2xl font-semibold;
   }
 
   /* drop down */
-  .dropdown{
-    @apply absolute top-10 left-2 w-40 rounded-md bg-white shadow-lg z-40
+  .dropdown {
+    @apply absolute top-10 left-2 w-40 rounded-md bg-white shadow-lg z-40;
   }
-  .dropdown__link{
-    @apply block px-4 py-2 hover:bg-gray-200 hover:rounded-md
+  .dropdown__link {
+    @apply block px-4 py-2 hover:bg-gray-200 hover:rounded-md;
   }
+
+  .dropdown_table {
+    @apply w-full h-8 border rounded-md border-eerieBlack/50
+  }
+
   /* GlobalLoading */
   .opacity__transition {
     transition: opacity 0.5s ease, visibility 0.5s ease;

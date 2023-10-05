@@ -7,23 +7,22 @@ import AddItemRow from "./AddItemRow";
 import ItemRow from "./ItemRow";
 import DataTableToolbar from "../DataTableToolbar";
 
-import useProductActions from "hook/customAtomData/product/useProductActions";
-import useGetCategory from "hook/customAtomData/category/useGetCategory";
-import useGetUsers from "hook/customAtomData/user/useGetUsers";
-import useSearchProduct from "hook/customAtomData/product/useSearchProduct";
+import useProductActions from "hook/useDataTable/product/useProductActions";
+import useGetCategory from "hook/useDataTable/category/useGetCategory";
+import useGetUsers from "hook/useDataTable/user/useGetUsers";
+import useSearchItem from "hook/useDataTable/useSearchItem";
 
 import { productHeaders } from "src/constraint/PRODUCT_TABLE";
 import { ProductsDataType } from "api/products/products.type";
 
 import { loadingAtom } from "atoms/loadingAtom";
-import useGetProducts from "hook/customAtomData/product/useGetProducts";
-
-import { TableDisplayConfig } from "pages/DataManagementPage";
+import useGetProducts from "hook/useDataTable/product/useGetProducts";
 
 export type ProductValuesType = Partial<ProductsDataType>;
 //Partial คือการระบุบ properties ที่จะใช้แค่บางส่วน
 
-function ProductsManagement({ showAll, setShowAll }: TableDisplayConfig) {
+function ProductsManagement() {
+  const [showAll, setShowAll] = useState<boolean>(false);
   const [refreshKey, setRefreshKey] = useState<number>(0);
 
   const { loadProductsData } = useGetProducts(refreshKey);
@@ -32,11 +31,14 @@ function ProductsManagement({ showAll, setShowAll }: TableDisplayConfig) {
 
   const {
     itemLength,
-    productError,
-    handleSearchProduct,
+    itemError,
+    handleSearchItem,
     displayData,
     setFilteredData,
-  } = useSearchProduct({ loadProductsData, showAll });
+  } = useSearchItem<ProductsDataType>({
+    loadData: loadProductsData,
+    showAll: showAll,
+  });
 
   const { loadCategoryData } = useGetCategory();
   const [categoryData] = loadCategoryData();
@@ -59,12 +61,13 @@ function ProductsManagement({ showAll, setShowAll }: TableDisplayConfig) {
   return (
     <div>
       <DataTableToolbar<ProductsDataType>
+        nameTable={"Products"}
         itemLength={itemLength}
         showAll={showAll}
         setShowAll={setShowAll}
         setRefreshKey={setRefreshKey}
         setFilteredData={setFilteredData}
-        handleSearchProduct={handleSearchProduct}
+        handleSearchItem={handleSearchItem}
       />
       <table
         className={`${
@@ -78,17 +81,17 @@ function ProductsManagement({ showAll, setShowAll }: TableDisplayConfig) {
             setRefreshKey={setRefreshKey}
             handleAddProduct={handleAddProduct}
           />
-          {productError && (
+          {itemError && (
             <TableStateRow
               status="error"
-              error={productError}
+              error={itemError}
               colSpan={productHeaders.length}
             />
           )}
-          {!displayData && !productError && (
+          {!displayData && !itemError && (
             <TableStateRow status="loading" colSpan={productHeaders.length} />
           )}
-          {displayData && displayData?.length === 0 && !productError && (
+          {displayData && displayData?.length === 0 && !itemError && (
             <TableStateRow status="empty" colSpan={productHeaders.length} />
           )}
           {displayData.map((product, index) => (

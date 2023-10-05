@@ -7,15 +7,15 @@ import {
   usersCancelTokenAtom,
   usersErrorAtom,
 } from "atoms/userAtom/getUsersAtom";
-import { UserType } from "api/user/users.type";
+import { UserDataType } from "api/user/users.type";
 import useCancelToken from "hook/useCancelToken";
 
 type UseUserReturnDataType = [
-  userData: UserType | null,
+  userData: UserDataType[] | null,
   userError: null | string
 ];
 
-function useGetUsers() {
+function useGetUsers(refreshKey?: number) {
   const [, getUsers] = useAtom(getUsersAtom);
   const [userData] = useAtom(usersAtom);
   const [userError] = useAtom(usersErrorAtom);
@@ -26,16 +26,14 @@ function useGetUsers() {
   }, [getUsers]);
 
   useEffect(() => {
-    if (!userData) {
-      getUsersData();
-    }
-  }, [userData, getUsersData]);
+    getUsersData();
+  }, [refreshKey, getUsersData]);
 
   useCancelToken(usersCancel);
 
   const loadUserData = (): UseUserReturnDataType => {
     if (userData) {
-      return [userData, null];
+      return [userData.data, null];
     }
     if (userError) {
       return [null, userError];

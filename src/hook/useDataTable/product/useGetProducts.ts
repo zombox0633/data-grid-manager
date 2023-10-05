@@ -9,10 +9,10 @@ import {
 } from "atoms/productAtom/getProductsAtom";
 import useCancelToken from "hook/useCancelToken";
 
-import { ProductsType } from "api/products/products.type";
+import { ProductsDataType } from "api/products/products.type";
 
 export type UseGetProductsReturnDataType = [
-  productsData: ProductsType | null,
+  productsData: ProductsDataType[] | null,
   productsError: null | string
 ];
 
@@ -34,7 +34,7 @@ function useGetProducts(refreshKey?: number) {
 
   function loadProductsData(): UseGetProductsReturnDataType {
     if (productsData) {
-      return [productsData, null];
+      return [productsData.data, null];
     }
     if (productsError) {
       console.warn(productsError);

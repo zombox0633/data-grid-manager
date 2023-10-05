@@ -1,5 +1,7 @@
 export const getStatusMessage = (status: string) => {
   switch (status) {
+    case "":
+      return "Please fill in your information to login.";
     case "VERIFYING":
       return "Verifying user information...";
     case "SUCCESS":
@@ -17,6 +19,8 @@ export const getStatusMessage = (status: string) => {
 
 export const getStatusColor = (status: string) => {
   switch (status) {
+    case "":
+      return "text-black/80";
     case "VERIFYING":
       return "text-yellow-500";
     case "SUCCESS":

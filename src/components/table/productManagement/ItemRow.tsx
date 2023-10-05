@@ -1,25 +1,29 @@
 import { useAtom } from "jotai";
-
 import { registerAtom } from "atoms/registerAtom";
 
-import { formatNumber } from "helpers/index";
+import TextInput from "./TextInput";
+import ProductActions from "./ProductActions";
+import CategoryDropDown from "./CategoryDropDown";
 
 import {
-  ProductHeaderType,
-  productHeaders,
-} from "src/constraint/PRODUCT_TABLE";
+  formatNumber,
+  getCellAlignmentClass,
+  localFormattedDate,
+} from "helpers/index";
 
-import { ProductsDataType } from "api/products/products.type";
-import { UpdateProductType } from "hook/customAtomData/product/useProductActions";
-import { UserType } from "api/user/users.type";
-import { CategoryType } from "api/category/category.type";
-import ProductActions from "./ProductActions";
 import useProductEditing from "hook/useTable/product/useProductEditing";
+
+import { productHeaders } from "src/constraint/PRODUCT_TABLE";
+import { ProductsDataType } from "api/products/products.type";
+import { UpdateProductType } from "hook/useDataTable/product/useProductActions";
+import { UserDataType } from "api/user/users.type";
+import { CategoryDataType } from "api/category/category.type";
+import { HeaderType } from "../Table";
 
 type ItemRowType = {
   product: ProductsDataType;
-  usersData: UserType | null;
-  categoryData: CategoryType | null;
+  usersData: UserDataType[] | null;
+  categoryData: CategoryDataType[] | null;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   handleUpdateProduct: (productData: UpdateProductType) => Promise<boolean>;
   handleDeleteProduct: (product_id: string) => Promise<boolean>;
@@ -58,99 +62,93 @@ function ItemRow({
   });
 
   const { id: productId } = product;
+  const isEvenRow = rowColor % 2 === 0;
+  const rowClassName = isEvenRow ? "bg-white" : "bg-eerieBlack/10";
 
-  const renderTdProduct = (header: ProductHeaderType) => {
-    const formattedValue =
-      header.key === "price" || header.key === "quantity"
-        ? formatNumber(product[header.key])
-        : String(product[header.key]);
+  const renderTdProduct = (header: HeaderType<ProductsDataType>) => {
+    const isEditingCurrentRow = editingId === productId;
+    const isEditableField = header.editable && editingId === productId;
 
-    if (
-      editingId === productId &&
-      header.editable &&
-      header.key !== "category_id"
-    ) {
-      return (
-        <input
-          {...(header.key === "price" || header.key === "quantity"
-            ? {
-                type: "number",
-                min: "0",
-                max: "9999",
-              }
-            : { type: "text" })}
-          aria-label={header.label}
-          defaultValue={String(product[header.key])}
-          disabled={isDisabled}
-          onChange={(e) => handleEditInputChange(header.key, e.target.value)}
-          className="table__input"
-        />
-      );
-    }
-    if (header.key === "category_id" && editingId !== productId) {
-      return (
-        categoryData?.data.find((cat) => cat.id === product[header.key])
-          ?.name || product[header.key]
-      );
-    }
-    if (header.key === "category_id" && editingId === productId) {
-      return (
-        <select
-          aria-label="Select product category"
-          value={editingValues.category_id || ""}
-          onChange={(e) => handleEditInputChange(header.key, e.target.value)}
-          disabled={isDisabled}
-          className=" w-full h-8"
-        >
-          <option value={""} disabled>
-            Select category
-          </option>
-          {categoryData?.data.map((category) => (
-            <option
-              key={category.id}
-              aria-label={header.label}
-              value={category.id}
-            >
-              {category.name}
-            </option>
-          ))}
-        </select>
-      );
-    }
-    if (header.key === "last_op_id") {
-      return (
-        usersData?.data.find((user) => user.id === product[header.key])?.name ||
-        product[header.key]
-      );
-    } else {
-      return formattedValue;
+    switch (header.key) {
+      case "category_id":
+        if (isEditingCurrentRow)
+          return (
+            <CategoryDropDown
+              header={header}
+              value={editingValues.category_id || ""}
+              categoryData={categoryData}
+              handleInputChange={handleEditInputChange}
+              isDisabled={isDisabled}
+            />
+          );
+        return (
+          categoryData?.find((cat) => cat.id === product[header.key])?.name ||
+          product[header.key]
+        );
+      case "price":
+      case "quantity":
+        return isEditableField ? (
+          <TextInput
+            header={header}
+            value={String(product[header.key])}
+            handleInputChange={handleEditInputChange}
+            isDisabled={isDisabled}
+          />
+        ) : (
+          formatNumber(product[header.key])
+        );
+      case "last_op_id":
+        return (
+          usersData?.find((user) => user.id === product[header.key])?.name ||
+          product[header.key]
+        );
+      case "created_timestamp":
+      case "lastupdate_timestamp":
+        return localFormattedDate(product[header.key]);
+      default:
+        return isEditableField ? (
+          <TextInput
+            header={header}
+            value={String(product[header.key])}
+            handleInputChange={handleEditInputChange}
+            isDisabled={isDisabled}
+          />
+        ) : (
+          product[header.key]
+        );
     }
   };
 
-  return (
-    <tr
-      key={productId}
-      className={rowColor % 2 === 0 ? "bg-white" : "bg-floralWhite"}
+  const renderProductCell = (header: HeaderType<ProductsDataType>) => (
+    <td
+      key={header.key}
+      className={`td__normal_state ${getCellAlignmentClass(header.key)}`}
     >
-      {productHeaders.map((header) => (
-        <td key={header.key} className="td__normal_state">
-          {renderTdProduct(header)}
-        </td>
-      ))}
-      <td className="px-4 py-2 border border-eerieBlack">
-        <ProductActions
-          product={product}
-          editingId={editingId}
-          deleteId={deleteId}
-          isDisabled={isDisabled}
-          handleEditClick={handleEditClick}
-          handleDeleteClick={handleDeleteClick}
-          handleConfirmEdit={handleConfirmEdit}
-          handleCancelEdit={handleCancelEdit}
-          handleConfirmDelete={handleConfirmDelete}
-          handleCancelDelete={handleCancelDelete}
-        />
-      </td>
+      {renderTdProduct(header)}
+    </td>
+  );
+
+  const renderProductActions = () => (
+    <td className="px-4 py-2 border border-eerieBlack">
+      <ProductActions
+        product={product}
+        editingId={editingId}
+        deleteId={deleteId}
+        isDisabled={isDisabled}
+        handleEditClick={handleEditClick}
+        handleDeleteClick={handleDeleteClick}
+        handleConfirmEdit={handleConfirmEdit}
+        handleCancelEdit={handleCancelEdit}
+        handleConfirmDelete={handleConfirmDelete}
+        handleCancelDelete={handleCancelDelete}
+      />
+    </td>
+  );
+
+  return (
+    <tr key={productId} className={rowClassName}>
+      {productHeaders.map(renderProductCell)}
+      {renderProductActions()}
     </tr>
   );
 }

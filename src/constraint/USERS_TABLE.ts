@@ -1,10 +1,11 @@
-import { CategoryDataType } from "api/category/category.type";
+import { UserDataType } from "api/user/users.type";
 import { HeaderType } from "components/table/Table";
 
-
-export const CategoryHeaders: HeaderType<CategoryDataType>[] = [
+export const UserHeaders: HeaderType<UserDataType>[] = [
   { key: "id", label: "id", editable: false },
+  { key: "email", label: "email", editable: false },
   { key: "name", label: "name", editable: true },
+  { key: "role", label: "role", editable: true },
   { key: "last_op_id", label: "latest Update", editable: false },
   { key: "created_timestamp", label: "created Timestamp", editable: false },
   { key: "lastupdate_timestamp", label: "lastUpdate Timestamp", editable: false },

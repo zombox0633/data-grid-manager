@@ -7,15 +7,15 @@ import {
   categoryErrorAtom,
   getCategoryAtom,
 } from "atoms/categoryAtom/getCategoryAtom";
-import { CategoryType } from "api/category/category.type";
+import { CategoryDataType } from "api/category/category.type";
 import useCancelToken from "hook/useCancelToken";
 
 type UseCatalogReturnDataType = [
-  categoryData: CategoryType | null,
+  categoryData: CategoryDataType[] | null,
   categoryError: null | string
 ];
 
-function useGetCategory() {
+function useGetCategory(refreshKey?: number) {
   const [, getCategory] = useAtom(getCategoryAtom);
   const [categoryData] = useAtom(categoryAtom);
   const [categoryError] = useAtom(categoryErrorAtom);
@@ -26,16 +26,14 @@ function useGetCategory() {
   }, [getCategory]);
 
   useEffect(() => {
-    if (!categoryData) {
-      getCategoryData();
-    }
-  }, [categoryData, getCategoryData]);
+    getCategoryData();
+  }, [refreshKey, getCategoryData]);
 
   useCancelToken(categoryCancel);
 
   function loadCategoryData(): UseCatalogReturnDataType {
     if (categoryData) {
-      return [categoryData, null];
+      return [categoryData.data, null];
     }
     if (categoryError) {
       console.warn(categoryError);

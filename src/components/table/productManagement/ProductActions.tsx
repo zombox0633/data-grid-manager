@@ -48,6 +48,7 @@ function ProductActions({
       </>
     );
   }
+  
   if (deleteId === product.id && editingId !== product.id) {
     return (
       <>
@@ -69,6 +70,7 @@ function ProductActions({
       </>
     );
   }
+
   return (
     <>
       <DefaultButton

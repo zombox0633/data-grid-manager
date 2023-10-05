@@ -8,35 +8,37 @@ import {
 import { showToast } from "style/toast";
 
 type DataTableToolbarType<T> = {
+  nameTable: string;
   itemLength?: number;
   showAll: boolean;
   setShowAll: React.Dispatch<React.SetStateAction<boolean>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   setFilteredData: React.Dispatch<React.SetStateAction<T[] | null>>;
-  handleSearchProduct: (query: string) => void;
+  handleSearchItem: (query: string, field: keyof T) => void;
 };
 
 function DataTableToolbar<T>({
+  nameTable,
   itemLength = 0,
   showAll,
   setShowAll,
   setRefreshKey,
   setFilteredData,
-  handleSearchProduct,
+  handleSearchItem,
 }: DataTableToolbarType<T>) {
   const [searchItem, setSearchItem] = useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchItem.trim() !== "") {
-      handleSearchProduct(searchItem);
+      handleSearchItem(searchItem, "name" as keyof T);
     } else {
       showToast("warning", "Please enter a valid search term.");
     }
   };
 
-  const handleInputChange = (value: string) => {
-    setSearchItem(value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchItem(e.target.value);
   };
 
   const handleReset = () => {
@@ -51,7 +53,7 @@ function DataTableToolbar<T>({
   return (
     <div>
       <div className=" flex flex-row items-end">
-        <h4 className="mr-4">Product</h4>
+        <h4 className="mr-4">{nameTable}</h4>
         <span className=" font-semibold">
           Total item available {itemLength}
         </span>
@@ -61,7 +63,7 @@ function DataTableToolbar<T>({
           <input
             aria-label="Search for products"
             type="text"
-            onChange={(e) => handleInputChange(e.target.value)}
+            onChange={handleInputChange}
             className="w-72 border-2 border-eerieBlack/60 rounded-md px-2"
           />
           <button
@@ -94,3 +96,4 @@ function DataTableToolbar<T>({
 }
 
 export default DataTableToolbar;
+// "name" as keyof T ระบุบว่า name เป็นข้อมูลในชนิดของ T
