@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Timer from "components/Timer";
-import ProductsManagement from "components/table/productManagement/ProductsManagement";
+import ProductsManagement from "components/table/management/ProductsManagement";
 import ProductsTable from "components/table/dataTable/ProductsTable";
 
 import { registerAtom } from "atoms/registerAtom";
