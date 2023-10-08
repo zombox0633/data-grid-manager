@@ -15,7 +15,8 @@ function NavigationBar() {
 
   return (
     <div className="sticky top-0 inset-x-0 h-0 z-40">
-      <div className="relative flex justify-between items-center h-16 bg-transparent ">
+      <div className="relative flex justify-between items-center h-20">
+        <div className=" absolute inset-0 w-full bg-fuchsia-50/20 backdrop-blur-md -z-10"/>
         <div className=" flex flex-row items-end pl-4 sm:ml-8 md:ml-12 lg:ml-16 py-4">
           <NavLink to="/">
             <h2 className="font-dancing cursor-pointer select-none">Roberta</h2>
@@ -36,3 +37,5 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+//backdrop-filter: blur();
+//filter: blur();
