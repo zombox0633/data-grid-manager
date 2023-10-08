@@ -1,5 +1,5 @@
 import { UserDataType } from "api/user/users.type";
-import { HeaderType } from "components/table/Table";
+import { HeaderType } from "types/Table.type";
 
 export const UserHeaders: HeaderType<UserDataType>[] = [
   { key: "id", label: "id", editable: false },

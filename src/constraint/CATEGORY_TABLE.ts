@@ -1,6 +1,5 @@
 import { CategoryDataType } from "api/category/category.type";
-import { HeaderType } from "components/table/Table";
-
+import { HeaderType } from "types/Table.type";
 
 export const CategoryHeaders: HeaderType<CategoryDataType>[] = [
   { key: "id", label: "id", editable: false },
