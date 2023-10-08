@@ -8,7 +8,7 @@ import {
 import { showToast } from "style/toast";
 
 type DataTableToolbarType<T> = {
-  nameTable: string;
+  tableName: string;
   itemLength?: number;
   showAll: boolean;
   setShowAll: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ type DataTableToolbarType<T> = {
 };
 
 function DataTableToolbar<T>({
-  nameTable,
+  tableName,
   itemLength = 0,
   showAll,
   setShowAll,
@@ -53,7 +53,7 @@ function DataTableToolbar<T>({
   return (
     <div>
       <div className=" flex flex-row items-end">
-        <h4 className="mr-4">{nameTable}</h4>
+        <h4 className="mr-4">{tableName}</h4>
         <span className=" font-semibold">
           Total item available {itemLength}
         </span>

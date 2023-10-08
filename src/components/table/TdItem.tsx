@@ -1,14 +1,10 @@
-import { HeaderType } from "./Table";
 import { formatNumber, localFormattedDate } from "helpers/index";
 import useGetCategory from "hook/useDataTable/category/useGetCategory";
 import useGetUsers from "hook/useDataTable/user/useGetUsers";
 
-type TdItemType<T> = {
-  header: HeaderType<T>;
-  data: T;
-};
+import { GenericItemType, HeaderType } from "types/Table.type";
 
-function TdItem<T>({ header, data }: TdItemType<T>) {
+function TdItem<T>({ header, item}: GenericItemType<T>) {
   const { loadUserData } = useGetUsers();
   const [usersData] = loadUserData();
   const { loadCategoryData } = useGetCategory();
@@ -18,27 +14,27 @@ function TdItem<T>({ header, data }: TdItemType<T>) {
     switch (header.key) {
       case "category_id":
         return (
-          categoryData?.find((cat) => cat.id === data[header.key])?.name ||
-          data[header.key]
+          categoryData?.find((cat) => cat.id === item[header.key])?.name ||
+          item[header.key]
         );
       case "price":
       case "quantity":
-        return formatNumber(Number(data[header.key]));
+        return formatNumber(Number(item[header.key]));
       case "last_op_id":
         return (
-          usersData?.find((user) => user.id === data[header.key])?.name ||
-          data[header.key]
+          usersData?.find((user) => user.id === item[header.key])?.name ||
+          item[header.key]
         );
       case "created_timestamp":
       case "lastupdate_timestamp":
-        return localFormattedDate(data[header.key] as Date);
+        return localFormattedDate(item[header.key] as Date);
       default:
-        return String(data[header.key]);
+        return String(item[header.key]);
     }
   };
 
   return (
-    <td key={String(data[header.key])} className="td__normal_state">
+    <td key={String(item[header.key])} className="td__normal_state">
       {String(renderTdItem(header))}
     </td>
   );

@@ -1,8 +1,7 @@
 import DefaultButton from "components/button/DefaultButton";
-import { ProductsDataType } from "api/products/products.type";
 
-type ProductActionsType = {
-  product: ProductsDataType;
+type TableRowActionType = {
+  itemId: string;
   editingId: string | null;
   deleteId: string | null;
   isDisabled: boolean
@@ -14,8 +13,8 @@ type ProductActionsType = {
   handleCancelDelete: () => void
 };
 
-function ProductActions({
-  product,
+function TableRowAction({
+  itemId,
   editingId,
   deleteId,
   isDisabled,
@@ -25,21 +24,21 @@ function ProductActions({
   handleCancelEdit,
   handleConfirmDelete,
   handleCancelDelete
-}: ProductActionsType) {
+}: TableRowActionType) {
 
-  if (editingId === product.id && deleteId !== product.id) {
+  if (editingId === itemId && deleteId !== itemId) {
     return (
       <>
         <DefaultButton
-          aria-label="Confirm edit action"
+          aria-label="Confirm edit data"
           onClick={handleConfirmEdit}
-          addClassName="table__button bg-green-400  disabled:bg-green-400/70"
+          addClassName="table__button bg-green-400 disabled:bg-green-400/70"
           disabled={isDisabled}
         >
           Submit
         </DefaultButton>
         <DefaultButton
-          aria-label="Cancel edit action"
+          aria-label="Cancel edit data"
           onClick={handleCancelEdit}
           addClassName="table__button bg-red-500 disabled:bg-red-500/70"
         >
@@ -49,11 +48,11 @@ function ProductActions({
     );
   }
   
-  if (deleteId === product.id && editingId !== product.id) {
+  if (deleteId === itemId && editingId !== itemId) {
     return (
       <>
         <DefaultButton
-          aria-label="Confirm delete action"
+          aria-label="Confirm delete data"
           onClick={handleConfirmDelete}
           disabled={isDisabled}
           addClassName="table__button bg-green-400  disabled:bg-green-400/70"
@@ -61,7 +60,7 @@ function ProductActions({
           Confirm
         </DefaultButton>
         <DefaultButton
-          aria-label="Cancel delete action"
+          aria-label="Cancel delete data"
           onClick={handleCancelDelete}
           addClassName="table__button bg-red-500 disabled:bg-red-500/70"
         >
@@ -91,4 +90,4 @@ function ProductActions({
   );
 }
 
-export default ProductActions;
+export default TableRowAction;

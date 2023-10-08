@@ -1,4 +1,4 @@
-import { HeaderType } from "./Table";
+import { HeaderType } from "types/Table.type";
 
 type TableHeadType<T> = {
   headers: HeaderType<T>[];

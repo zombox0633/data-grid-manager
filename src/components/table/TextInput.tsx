@@ -1,19 +1,18 @@
-import { ProductsDataType } from "api/products/products.type";
-import { HeaderType } from "../Table";
+import { HeaderType } from "types/Table.type";
 
-type TextInputType = {
-  header: HeaderType<ProductsDataType>;
-  value: string;
-  handleInputChange: (key: keyof ProductsDataType, value: string) => void;
+type TextInputType<T> = {
+  header: HeaderType<T>;
+  value: string | number;
+  handleInputChange: (key: keyof T, value: string) => void;
   isDisabled: boolean;
 };
 
-function TextInput({
+function TextInput<T>({
   header,
   value,
   handleInputChange,
   isDisabled,
-}: TextInputType) {
+}: TextInputType<T>) {
   return (
     <input
       {...(header.key === "price" || header.key === "quantity"

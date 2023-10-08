@@ -1,17 +1,9 @@
-import { useEffect } from "react";
-import { useAtom } from "jotai";
-
 import TableHead from "./TableHead";
 import TableStateRow from "./TableStateRow";
-
-import { loadingAtom } from "atoms/loadingAtom";
 import TdItem from "./TdItem";
+import useLoadingDefault from "hook/useLoadingDefault";
 
-export type HeaderType<T> = {
-  key: keyof T;
-  label: string;
-  editable: boolean;
-};
+import { HeaderType } from "types/Table.type";
 
 export type TablePropsType<T> = {
   headers: HeaderType<T>[];
@@ -22,18 +14,7 @@ export type TablePropsType<T> = {
 };
 
 function Table<T>({ headers, data, error }: TablePropsType<T>) {
-  const [, setIsOpen] = useAtom(loadingAtom);
-
-  useEffect(() => {
-    setIsOpen(true);
-    const timer = setTimeout(() => {
-      setIsOpen(false);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [setIsOpen]);
+  useLoadingDefault();
 
   return (
     <div>
@@ -64,7 +45,7 @@ function Table<T>({ headers, data, error }: TablePropsType<T>) {
                   <TdItem<T>
                     key={String(value[header.key])}
                     header={header}
-                    data={value}
+                    item={value}
                   />
                 ))}
               </tr>

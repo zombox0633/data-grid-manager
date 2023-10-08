@@ -1,10 +1,11 @@
 import { useState } from "react";
-import Table, { HeaderType } from "./Table";
+import Table from "./Table";
 import DataTableToolbar from "./DataTableToolbar";
 
 import useSearchItem from "hook/useDataTable/useSearchItem";
 
-export type LoadDataType<T> = () => [T[] | null, string | null];
+import { HeaderType, LoadDataType } from "types/Table.type";
+
 type DataTableType<T> = {
   nameTable: string;
   loadData: LoadDataType<T>;
@@ -20,21 +21,18 @@ function DataTable<T>({
 }: DataTableType<T>) {
   const [showAll, setShowAll] = useState<boolean>(false);
 
-  const {
-    itemLength,
-    itemError,
-    handleSearchItem,
-    displayData,
-    setFilteredData,
-  } = useSearchItem<T>({
-    loadData: loadData,
-    showAll: showAll,
-  });
+  const { itemError, handleSearchItem, displayData, setFilteredData } =
+    useSearchItem<T>({
+      loadData,
+      showAll,
+    });
+
+  const itemLength = displayData.length ?? 0;
 
   return (
     <div>
       <DataTableToolbar<T>
-        nameTable={nameTable}
+        tableName={nameTable}
         itemLength={itemLength}
         showAll={showAll}
         setShowAll={setShowAll}

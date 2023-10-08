@@ -1,5 +1,5 @@
-import { LoadDataType } from "components/table/DataTable";
 import { useState } from "react";
+import { LoadDataType } from "types/Table.type";
 
 // type loadProductsDataType = {
 //   //การทำ Dependency Injection
@@ -17,7 +17,7 @@ function useSearchItem<T>(props: useSearchItemType<T>) {
 
   const [filteredData, setFilteredData] = useState<T[] | null>(null);
 
-  const itemLength = data?.length ?? 0;
+  // const itemLength = data?.length ?? 0;
 
   const handleSearchItem = (query: string, field: keyof T) => {
     if (!data) return;
@@ -38,7 +38,6 @@ function useSearchItem<T>(props: useSearchItemType<T>) {
     : getDisplayData().slice(0, 20);
 
   return {
-    itemLength,
     itemError,
     handleSearchItem,
     displayData,

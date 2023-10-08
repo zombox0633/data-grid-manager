@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 
-import { ProductValuesType } from "components/table/productManagement/ProductsManagement";
 import { AddProductType } from "hook/useDataTable/product/useProductActions";
 import { ProductsDataType } from "api/products/products.type";
 import { RegisterType } from "api/register/register.type";
+import { ProductValuesType } from "src/constraint/PRODUCT_TABLE";
 
 type useProductAdd = {
   register: RegisterType | null;
