@@ -1,4 +1,6 @@
+import { useAtom } from "jotai";
 import { useState } from "react";
+import { showAllAtom } from "atoms/table/tableAtom";
 import { LoadDataType } from "types/Table.type";
 
 // type loadProductsDataType = {
@@ -8,13 +10,13 @@ import { LoadDataType } from "types/Table.type";
 
 type useSearchItemType<T> = {
   loadData: LoadDataType<T>;
-  showAll: boolean;
 };
 
-function useSearchItem<T>(props: useSearchItemType<T>) {
-  const { loadData, showAll } = props;
-  const [data, itemError] = loadData();
+function useSearchItem<T>({loadData}: useSearchItemType<T>) {
+  const [showAll] = useAtom(showAllAtom)
 
+  const [data, itemError] = loadData();
+  
   const [filteredData, setFilteredData] = useState<T[] | null>(null);
 
   // const itemLength = data?.length ?? 0;

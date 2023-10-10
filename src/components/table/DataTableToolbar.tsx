@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAtom } from "jotai";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
@@ -6,12 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { showToast } from "style/toast";
+import { showAllAtom } from "atoms/table/tableAtom";
 
 type DataTableToolbarType<T> = {
   tableName: string;
   itemLength?: number;
-  showAll: boolean;
-  setShowAll: React.Dispatch<React.SetStateAction<boolean>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   setFilteredData: React.Dispatch<React.SetStateAction<T[] | null>>;
   handleSearchItem: (query: string, field: keyof T) => void;
@@ -20,12 +20,11 @@ type DataTableToolbarType<T> = {
 function DataTableToolbar<T>({
   tableName,
   itemLength = 0,
-  showAll,
-  setShowAll,
   setRefreshKey,
   setFilteredData,
   handleSearchItem,
 }: DataTableToolbarType<T>) {
+  const [showAll, setShowAll] = useAtom(showAllAtom);
   const [searchItem, setSearchItem] = useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

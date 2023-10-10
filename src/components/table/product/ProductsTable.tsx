@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import DataTable from "../DataTable";
+import DataTable from "../dataTable/DataTable";
 
 import useGetProducts from "hook/useDataTable/product/useGetProducts";
 

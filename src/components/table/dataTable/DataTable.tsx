@@ -1,6 +1,5 @@
-import { useState } from "react";
 import Table from "./Table";
-import DataTableToolbar from "./DataTableToolbar";
+import DataTableToolbar from "../DataTableToolbar";
 
 import useSearchItem from "hook/useDataTable/useSearchItem";
 
@@ -19,12 +18,9 @@ function DataTable<T>({
   tableHeaders,
   setRefreshKey,
 }: DataTableType<T>) {
-  const [showAll, setShowAll] = useState<boolean>(false);
-
   const { itemError, handleSearchItem, displayData, setFilteredData } =
     useSearchItem<T>({
-      loadData,
-      showAll,
+      loadData
     });
 
   const itemLength = displayData.length ?? 0;
@@ -34,8 +30,6 @@ function DataTable<T>({
       <DataTableToolbar<T>
         tableName={nameTable}
         itemLength={itemLength}
-        showAll={showAll}
-        setShowAll={setShowAll}
         setRefreshKey={setRefreshKey}
         setFilteredData={setFilteredData}
         handleSearchItem={handleSearchItem}

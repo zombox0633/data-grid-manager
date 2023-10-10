@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DataTable from "../DataTable";
+import DataTable from "../dataTable/DataTable";
 
 import useGetUsers from "hook/useDataTable/user/useGetUsers";
 

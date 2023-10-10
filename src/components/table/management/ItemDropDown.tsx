@@ -1,3 +1,5 @@
+import { useAtom } from "jotai";
+import { isDisabledAtom } from "atoms/table/tableAtom";
 import { HeaderType } from "types/Table.type";
 
 export interface DropdownItemType {
@@ -10,7 +12,6 @@ type ItemDropDownType<T, U> = {
   value: string;
   items: U[] | null;
   handleInputChange: (key: keyof T, value: string) => void;
-  isDisabled: boolean;
 };
 
 function ItemDropDown<T, U extends DropdownItemType>({
@@ -18,8 +19,9 @@ function ItemDropDown<T, U extends DropdownItemType>({
   value,
   items,
   handleInputChange,
-  isDisabled,
 }: ItemDropDownType<T, U>) {
+  const [isDisabled] = useAtom(isDisabledAtom);
+  
   return (
     <select
       aria-label="Select product category"

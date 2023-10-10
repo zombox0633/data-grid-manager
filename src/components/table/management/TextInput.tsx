@@ -1,18 +1,20 @@
+import { useAtom } from "jotai";
+import { isDisabledAtom } from "atoms/table/tableAtom";
 import { HeaderType } from "types/Table.type";
 
 type TextInputType<T> = {
   header: HeaderType<T>;
   value: string | number;
   handleInputChange: (key: keyof T, value: string) => void;
-  isDisabled: boolean;
 };
 
 function TextInput<T>({
   header,
   value,
   handleInputChange,
-  isDisabled,
 }: TextInputType<T>) {
+  const [isDisabled] = useAtom(isDisabledAtom);
+  
   return (
     <input
       {...(header.key === "price" || header.key === "quantity"

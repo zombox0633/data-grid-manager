@@ -1,15 +1,14 @@
-import { useState } from "react";
 import TableHead from "../TableHead";
 import TableStateRow from "../TableStateRow";
-import AddItemRow from "../AddItemRow";
-import ItemRow from "../ItemRow";
+import AddItemRow from "./AddItemRow";
+import ItemRow from "./ItemRow";
 import DataTableToolbar from "../DataTableToolbar";
 
 import useLoadingDefault from "hook/useLoadingDefault";
 import useSearchItem from "hook/useDataTable/useSearchItem";
 
 import { HeaderType, LoadDataType, tableRowItemId } from "types/Table.type";
-import { DropdownItemType } from "../ItemDropDown";
+import { DropdownItemType } from "./ItemDropDown";
 
 type TableManagementType<T, U> = {
   tableName: string;
@@ -17,7 +16,6 @@ type TableManagementType<T, U> = {
   loadData: LoadDataType<T>;
   dropDownItem: U[] | null;
   newItemToAdd: Partial<T>;
-  isDisabled: boolean;
   handleNewItemInputChange: (key: keyof T, value: string) => void;
   handleAdd: () => Promise<void>;
   handleResetAdd: () => void;
@@ -32,7 +30,6 @@ function TableManagement<T extends tableRowItemId, U extends DropdownItemType>({
   loadData,
   dropDownItem,
   newItemToAdd,
-  isDisabled,
   handleNewItemInputChange,
   handleAdd,
   handleResetAdd,
@@ -40,10 +37,8 @@ function TableManagement<T extends tableRowItemId, U extends DropdownItemType>({
   handleDeleteItem,
   setRefreshKey,
 }: TableManagementType<T, U>) {
-  const [showAll, setShowAll] = useState<boolean>(false);
-
   const { itemError, handleSearchItem, displayData, setFilteredData } =
-    useSearchItem<T>({ loadData, showAll });
+    useSearchItem<T>({ loadData});
 
   const itemLength = displayData.length ?? 0;
 
@@ -54,8 +49,6 @@ function TableManagement<T extends tableRowItemId, U extends DropdownItemType>({
       <DataTableToolbar<T>
         tableName={tableName}
         itemLength={itemLength}
-        showAll={showAll}
-        setShowAll={setShowAll}
         setRefreshKey={setRefreshKey}
         setFilteredData={setFilteredData}
         handleSearchItem={handleSearchItem}
@@ -74,7 +67,6 @@ function TableManagement<T extends tableRowItemId, U extends DropdownItemType>({
             handleAddItem={handleAdd}
             handleNewItemInputChange={handleNewItemInputChange}
             handleResetAdd={handleResetAdd}
-            isDisabled={isDisabled}
           />
           {itemError && (
             <TableStateRow

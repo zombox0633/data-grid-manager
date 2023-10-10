@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
 
-import TableManagement from "./TableManagement";
+import TableManagement from "../management/TableManagement";
 
 import useProductActions from "hook/useDataTable/product/useProductActions";
 import useGetCategory from "hook/useDataTable/category/useGetCategory";
 import useGetProducts from "hook/useDataTable/product/useGetProducts";
 import useProductAdd from "hook/useTable/product/useProductAdd";
-
-import { registerAtom } from "atoms/registerAtom";
 
 import { productHeaders } from "src/constraint/PRODUCT_TABLE";
 import { ProductsDataType } from "api/products/products.type";
@@ -21,21 +18,14 @@ function ProductsManagement() {
   const { handleAddProduct, handleUpdateProduct, handleDeleteProduct } =
     useProductActions();
 
-  const [register] = useAtom(registerAtom);
   const { loadCategoryData } = useGetCategory();
   const [categoryData] = loadCategoryData();
 
-  const {
-    newProduct,
-    isDisabled,
-    handleAdd,
-    handleNewProductInputChange,
-    handleResetAdd,
-  } = useProductAdd({
-    register,
-    handleAddProduct,
-    setRefreshKey,
-  });
+  const { newProduct, handleAdd, handleNewProductInputChange, handleResetAdd } =
+    useProductAdd({
+      handleAddProduct,
+      setRefreshKey,
+    });
 
   return (
     <>
@@ -45,7 +35,6 @@ function ProductsManagement() {
         loadData={loadProductsData}
         dropDownItem={categoryData}
         newItemToAdd={newProduct}
-        isDisabled={isDisabled}
         handleNewItemInputChange={handleNewProductInputChange}
         handleAdd={handleAdd}
         handleResetAdd={handleResetAdd}

@@ -1,39 +1,50 @@
+import { useAtom } from "jotai";
 import DefaultButton from "components/button/DefaultButton";
 
-type TableRowActionType = {
+import useTableRowClickHandler from "hook/useTable/product/useTableRowClickHandler";
+
+import { isDisabledAtom } from "atoms/table/tableAtom";
+import { ActionState } from "types/Table.type";
+
+type TableRowActionType<T> = {
   itemId: string;
-  editingId: string | null;
-  deleteId: string | null;
-  isDisabled: boolean
-  handleEditClick: () => void
-  handleDeleteClick: () => void
-  handleConfirmEdit: () => void
-  handleCancelEdit: () => void
-  handleConfirmDelete: () => void
-  handleCancelDelete: () => void
+  actionState: ActionState;
+  handleConfirmEdit: () => void;
+  handleConfirmDelete: () => void;
+  setActionState: React.Dispatch<React.SetStateAction<ActionState>>;
+  setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
 };
 
-function TableRowAction({
+function TableRowAction<T>({
   itemId,
-  editingId,
-  deleteId,
-  isDisabled,
-  handleEditClick,
-  handleDeleteClick,
+  actionState,
   handleConfirmEdit,
-  handleCancelEdit,
   handleConfirmDelete,
-  handleCancelDelete
-}: TableRowActionType) {
+  setEditingValues,
+  setActionState,
+}: TableRowActionType<T>) {
+  const [isDisabled] = useAtom(isDisabledAtom);
 
-  if (editingId === itemId && deleteId !== itemId) {
+  const {
+    handleEditClick,
+    handleCancelEdit,
+    handleDeleteClick,
+    handleCancelDelete,
+  } = useTableRowClickHandler({
+    itemId,
+    actionState,
+    setActionState,
+    setEditingValues,
+  });
+
+  if (actionState.type === "edit" && actionState.id === itemId) {
     return (
       <>
         <DefaultButton
           aria-label="Confirm edit data"
           onClick={handleConfirmEdit}
-          addClassName="table__button bg-green-400 disabled:bg-green-400/70"
           disabled={isDisabled}
+          addClassName="table__button bg-green-400 disabled:bg-green-400/70"
         >
           Submit
         </DefaultButton>
@@ -47,8 +58,8 @@ function TableRowAction({
       </>
     );
   }
-  
-  if (deleteId === itemId && editingId !== itemId) {
+
+  if (actionState.type === "delete" && actionState.id === itemId) {
     return (
       <>
         <DefaultButton

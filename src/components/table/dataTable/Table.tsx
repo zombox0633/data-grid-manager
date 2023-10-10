@@ -1,5 +1,5 @@
-import TableHead from "./TableHead";
-import TableStateRow from "./TableStateRow";
+import TableHead from "../TableHead";
+import TableStateRow from "../TableStateRow";
 import TdItem from "./TdItem";
 import useLoadingDefault from "hook/useLoadingDefault";
 

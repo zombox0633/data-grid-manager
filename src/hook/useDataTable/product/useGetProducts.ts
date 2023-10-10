@@ -1,20 +1,14 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useAtom } from "jotai";
-
+import useGetData from "../useGetData";
 import {
   productsAtom,
   productsErrorAtom,
   getProductsAtom,
   getProductsCancelTokenAtom,
 } from "atoms/productAtom/getProductsAtom";
-import useCancelToken from "hook/useCancelToken";
 
 import { ProductsDataType } from "api/products/products.type";
-
-export type UseGetProductsReturnDataType = [
-  productsData: ProductsDataType[] | null,
-  productsError: null | string
-];
 
 function useGetProducts(refreshKey?: number) {
   const [, getProducts] = useAtom(getProductsAtom);
@@ -22,29 +16,20 @@ function useGetProducts(refreshKey?: number) {
   const [productsError] = useAtom(productsErrorAtom);
   const [cancelTokenSource] = useAtom(getProductsCancelTokenAtom);
 
-  const getProductsData = useCallback(async () => {
+  const getProductDataItem = useCallback(async () => {
     await getProducts();
   }, [getProducts]);
 
-  useEffect(() => {
-    getProductsData();
-  }, [refreshKey, getProductsData]);
-
-  useCancelToken(cancelTokenSource);
-
-  function loadProductsData(): UseGetProductsReturnDataType {
-    if (productsData) {
-      return [productsData.data, null];
-    }
-    if (productsError) {
-      console.warn(productsError);
-      return [null, productsError];
-    }
-    return [null, null];
-  }
+  const { loadData } = useGetData<ProductsDataType>({
+    itemData: productsData?.data,
+    getDataItem: getProductDataItem,
+    itemError: productsError,
+    cancelTokenSource,
+    refreshKey,
+  });
 
   return {
-    loadProductsData,
+    loadProductsData: loadData,
   };
 }
 

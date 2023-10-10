@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DataTable from "../DataTable";
+import DataTable from "../dataTable/DataTable";
 import useGetCategory from "hook/useDataTable/category/useGetCategory";
 
 import { CategoryDataType } from "api/category/category.type";

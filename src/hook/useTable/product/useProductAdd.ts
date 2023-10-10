@@ -1,23 +1,20 @@
 import { useCallback, useState } from "react";
-
+import { useAtom } from "jotai";
+import { registerAtom } from "atoms/registerAtom";
+import { isDisabledAtom } from "atoms/table/tableAtom";
 import { AddProductType } from "hook/useDataTable/product/useProductActions";
 import { ProductsDataType } from "api/products/products.type";
-import { RegisterType } from "api/register/register.type";
 import { ProductValuesType } from "src/constraint/PRODUCT_TABLE";
 
 type useProductAdd = {
-  register: RegisterType | null;
   handleAddProduct: (productData: AddProductType) => Promise<boolean>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useProductAdd({
-  register,
-  handleAddProduct,
-  setRefreshKey,
-}: useProductAdd) {
+function useProductAdd({ handleAddProduct, setRefreshKey }: useProductAdd) {
+  const [register] = useAtom(registerAtom);
+  const [,setIsDisabled] = useAtom(isDisabledAtom)
   const [newProduct, setNewProduct] = useState<ProductValuesType>({});
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const handleNewProductInputChange = (
     key: keyof ProductsDataType,
@@ -53,6 +50,7 @@ function useProductAdd({
     register?.data.id,
     handleAddProduct,
     setRefreshKey,
+    setIsDisabled
   ]);
 
   const handleResetAdd = useCallback(() => {
@@ -61,10 +59,9 @@ function useProductAdd({
 
   return {
     newProduct,
-    isDisabled,
     handleAdd,
     handleNewProductInputChange,
-    handleResetAdd
+    handleResetAdd,
   };
 }
 

@@ -14,7 +14,7 @@ function DefaultButton({
 }: DefaultButtonPropTypes) {
   const buttonClass = addClassName ? addClassName : "primary__button";
   return (
-    <button {...props} className={buttonClass}>
+    <button {...props}  className={buttonClass}>
       {children}
     </button>
   );

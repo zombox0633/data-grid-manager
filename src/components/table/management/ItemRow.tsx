@@ -1,7 +1,7 @@
+import { useState } from "react";
 import TextInput from "./TextInput";
 import TableRowAction from "./TableRowAction";
 import ItemDropDown, { DropdownItemType } from "./ItemDropDown";
-
 import {
   formatNumber,
   getCellAlignmentClass,
@@ -10,8 +10,7 @@ import {
 
 import useTableRowAction from "hook/useTable/useTableRowAction";
 import useGetUsers from "hook/useDataTable/user/useGetUsers";
-
-import { HeaderType, tableRowItemId } from "types/Table.type";
+import { ActionState, HeaderType, tableRowItemId } from "types/Table.type";
 
 type ItemRowType<T, U> = {
   headers: HeaderType<T>[];
@@ -32,22 +31,22 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
   handleDeleteItem,
   rowColor,
 }: ItemRowType<T, U>) {
+  const [actionState, setActionState] = useState<ActionState>({
+    type: null,
+    id: null,
+  });
+
   const {
-    tableRowId,
     editingValues,
-    deleteId,
-    isDisabled,
-    handleEditClick,
     handleConfirmEdit,
-    handleCancelEdit,
-    handleDeleteClick,
     handleConfirmDelete,
-    handleCancelDelete,
     handleEditInputChange,
+    setEditingValues,
   } = useTableRowAction({
     items: item,
     handleUpdateItem,
     handleDeleteItem,
+    setActionState,
     setRefreshKey,
   });
 
@@ -55,14 +54,19 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
   const [usersData] = loadUserData();
 
   const { id: itemId } = item;
-  const categoryId = ((editingValues as any).category_id as string) || "";
+  const categoryId =
+    "category_id" in editingValues ? (editingValues.category_id as string) : "";
 
   const isEvenRow = rowColor % 2 === 0;
   const rowClassName = isEvenRow ? "bg-white" : "bg-eerieBlack/10";
 
   const renderTdProduct = (header: HeaderType<T>) => {
-    const isEditingCurrentRow = tableRowId === itemId;
-    const isEditableField = header.editable && tableRowId === itemId;
+    const isEditingCurrentRow =
+      actionState.id === itemId && actionState.type === "edit";
+    const isEditableField =
+      header.editable &&
+      actionState.id === itemId &&
+      actionState.type === "edit";
 
     switch (header.key) {
       case "category_id":
@@ -73,7 +77,6 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
               value={categoryId}
               items={itemDropDown}
               handleInputChange={handleEditInputChange}
-              isDisabled={isDisabled}
             />
           );
         return (
@@ -87,7 +90,6 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
             header={header}
             value={String(item[header.key])}
             handleInputChange={handleEditInputChange}
-            isDisabled={isDisabled}
           />
         ) : (
           formatNumber(Number(item[header.key]))
@@ -106,7 +108,6 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
             header={header}
             value={String(item[header.key])}
             handleInputChange={handleEditInputChange}
-            isDisabled={isDisabled}
           />
         ) : (
           String(item[header.key])
@@ -127,17 +128,13 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
 
   const renderTableRowAction = () => (
     <td className="px-4 py-2 border border-eerieBlack">
-      <TableRowAction
+      <TableRowAction<T>
         itemId={itemId}
-        editingId={tableRowId}
-        deleteId={deleteId}
-        isDisabled={isDisabled}
-        handleEditClick={handleEditClick}
-        handleDeleteClick={handleDeleteClick}
+        actionState={actionState}
         handleConfirmEdit={handleConfirmEdit}
-        handleCancelEdit={handleCancelEdit}
         handleConfirmDelete={handleConfirmDelete}
-        handleCancelDelete={handleCancelDelete}
+        setActionState={setActionState}
+        setEditingValues={setEditingValues}
       />
     </td>
   );

@@ -1,5 +1,5 @@
 
-import ProductsTable from "components/table/dataTable/ProductsTable";
+import ProductsTable from "components/table/product/ProductsTable";
 
 function TestPage() {
   return (

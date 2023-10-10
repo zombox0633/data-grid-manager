@@ -1,7 +1,9 @@
 import { useCallback } from "react";
-
-import { RegisterType } from "api/register/register.type";
+import { useAtom } from "jotai";
+import { registerAtom } from "atoms/registerAtom";
+import { isDisabledAtom } from "atoms/table/tableAtom";
 import { UpdateProductType } from "hook/useDataTable/product/useProductActions";
+import { ActionState } from "types/Table.type";
 
 type ProductDataToEditType = {
   id: string;
@@ -13,25 +15,24 @@ type ProductDataToEditType = {
 
 type useProductEditType<T> = {
   product: T;
-  register: RegisterType | null;
   editingValues: Partial<T>;
   setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
-  setTableRowId: React.Dispatch<React.SetStateAction<string | null>>;
+  setActionState: React.Dispatch<React.SetStateAction<ActionState>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
-  setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   handleUpdateItem: (data: UpdateProductType) => Promise<boolean>;
 };
 
 function useProductEdit<T extends ProductDataToEditType>({
   product,
-  register,
   editingValues,
   setEditingValues,
-  setTableRowId,
+  setActionState,
   setRefreshKey,
-  setIsDisabled,
   handleUpdateItem,
 }: useProductEditType<T>) {
+  const [register] = useAtom(registerAtom);
+  const [, setIsDisabled] = useAtom(isDisabledAtom);
+
   const handleConfirmEdit = useCallback(async () => {
     setIsDisabled(true);
     const success = await handleUpdateItem({
@@ -44,7 +45,7 @@ function useProductEdit<T extends ProductDataToEditType>({
     });
 
     if (success) {
-      setTableRowId(null);
+      setActionState({ type: null, id: null });
       setEditingValues({});
       setRefreshKey((prevKey) => prevKey + 1);
     }
@@ -58,7 +59,7 @@ function useProductEdit<T extends ProductDataToEditType>({
     editingValues.quantity,
     register?.data.id,
     handleUpdateItem,
-    setTableRowId,
+    setActionState,
     setEditingValues,
     setRefreshKey,
     setIsDisabled,
