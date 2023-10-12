@@ -1,8 +1,9 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import updateProduct from "api/products/updateProducts";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
 import { ProductsType } from "api/products/products.type";
+import { CancelTokenSource } from "axios";
 
 export const productToUpdateAtom = atom<ProductsType | null>(null);
 export const updateProductErrorAtom = atom<string | null>(null);
@@ -13,20 +14,20 @@ export const updateProductCancelTokenAtom = atom<CancelTokenSource | null>(
 export const updateProductAtom = atom(
   (get) => get(productToUpdateAtom),
   async (get, set, { id, name, category_id, price, quantity, last_op_id }) => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(updateProductCancelTokenAtom, cancelToken);
 
-    const [data, error] = await updateProduct({
-      id,
-      name,
-      category_id,
-      price,
-      quantity,
-      last_op_id,
-      cancelToken,
-    });
-
     try {
+      const [data, error] = await updateProduct({
+        id,
+        name,
+        category_id,
+        price,
+        quantity,
+        last_op_id,
+        cancelToken,
+      });
+      
       if (data) {
         set(productToUpdateAtom, data);
         return true;
@@ -43,7 +44,7 @@ export const updateProductAtom = atom(
 export const resetUpdateProductAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(updateProductCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to updateProducts reset.");
+    cancelToken.cancel(getCancelMessage("updateProducts"));
   }
   set(productToUpdateAtom, null);
   return true;

@@ -1,8 +1,9 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import getCategory from "api/category/getCategory";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
 import { CategoryType } from "api/category/category.type";
+import { CancelTokenSource } from "axios";
 
 export const categoryAtom = atom<CategoryType | null>(null);
 export const categoryErrorAtom = atom<string | null>(null);
@@ -11,7 +12,7 @@ export const categoryCancelTokenAtom = atom<CancelTokenSource | null>(null);
 export const getCategoryAtom = atom(
   (get) => get(categoryAtom),
   async (get, set): Promise<boolean> => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(categoryCancelTokenAtom, cancelToken);
 
     try {
@@ -32,7 +33,7 @@ export const getCategoryAtom = atom(
 export const removeRegisterAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(categoryCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to getCategory reset.");
+    cancelToken.cancel(getCancelMessage("getCategory"));
   }
   set(categoryAtom, null);
   return true;

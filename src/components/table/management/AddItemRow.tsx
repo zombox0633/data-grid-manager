@@ -1,47 +1,49 @@
 import { useAtom } from "jotai";
 import DefaultButton from "components/button/DefaultButton";
-import ItemDropDown, { DropdownItemType } from "./ItemDropDown";
+import ItemDropDown from "./ItemDropDown";
 import TextInput from "./TextInput";
 
+import useGetCategory from "hook/useDataTable/category/useGetCategory";
 import { getCellAlignmentClass } from "helpers/index";
 
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 
 import { HeaderType } from "types/Table.type";
+import { CategoryDataType } from "api/category/category.type";
+import useTableAddItem from "hook/useTable/useTableAddItem";
 
-type AddItemRowType<T, U> = {
+type AddItemRowType<T> = {
   headers: HeaderType<T>[];
-  newItem: Partial<T>;
-  dropDownItem: U[] | null;
-  handleAddItem: () => Promise<void>;
-  handleNewItemInputChange: (key: keyof T, value: string) => void;
-  handleResetAdd: () => void;
+  setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function AddItemRow<T, U extends DropdownItemType>({
-  headers,
-  newItem,
-  dropDownItem,
-  handleAddItem,
-  handleNewItemInputChange,
-  handleResetAdd,
-}: AddItemRowType<T, U>) {
+function AddItemRow<T>({ headers, setRefreshKey }: AddItemRowType<T>) {
   const [register] = useAtom(registerAtom);
   const [isDisabled] = useAtom(isDisabledAtom);
 
-  const registerName = register?.data.name as string;
-  const categoryId = "category_id" in newItem ? (newItem.category_id as string) : "";
+  const { loadCategoryData } = useGetCategory();
+  const [categoryData] = loadCategoryData();
 
-  
+  const {
+    newItem,
+    handleConfirmToAdd,
+    handleNewItemInputChange,
+    handleResetAdd,
+  } = useTableAddItem<T>({ setRefreshKey });
+
+  const registerName = register?.data.name as string;
+  const categoryId =
+    "category_id" in newItem ? (newItem.category_id as string) : "";
+
   const renderTdAddProduct = (header: HeaderType<T>) => {
     switch (header.key) {
       case "category_id":
         return (
-          <ItemDropDown<T, U>
+          <ItemDropDown<T, CategoryDataType>
             header={header}
             value={categoryId}
-            items={dropDownItem}
+            items={categoryData}
             handleInputChange={handleNewItemInputChange}
           />
         );
@@ -77,7 +79,7 @@ function AddItemRow<T, U extends DropdownItemType>({
       <td className="px-4 py-2 border border-eerieBlack bg-eerieBlack/10">
         <DefaultButton
           aria-label="Add new product"
-          onClick={handleAddItem}
+          onClick={handleConfirmToAdd}
           disabled={isDisabled}
           addClassName="table__button bg-green-400 disabled:bg-green-400/70"
         >

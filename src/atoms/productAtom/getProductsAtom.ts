@@ -1,7 +1,8 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import getProducts from "api/products/getProducts";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
+import { CancelTokenSource } from "axios";
 import { ProductsType } from "api/products/products.type";
 
 export const productsAtom = atom<ProductsType | null>(null);
@@ -11,7 +12,7 @@ export const getProductsCancelTokenAtom = atom<CancelTokenSource | null>(null);
 export const getProductsAtom = atom(
   (get) => get(productsAtom),
   async (get, set): Promise<boolean> => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(getProductsCancelTokenAtom, cancelToken);
 
     try {
@@ -32,7 +33,7 @@ export const getProductsAtom = atom(
 export const removeProductsAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(getProductsCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to getProducts reset.");
+    cancelToken.cancel(getCancelMessage("getProducts"));
   }
   set(productsAtom, null);
   return true;

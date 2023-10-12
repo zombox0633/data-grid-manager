@@ -1,7 +1,8 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import getRegister from "api/register/register";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
+import { CancelTokenSource } from "axios";
 import { RegisterType } from "api/register/register.type";
 
 export const registerAtom = atom<RegisterType | null>(null);
@@ -11,7 +12,7 @@ export const registerCancelTokenAtom = atom<CancelTokenSource | null>(null);
 export const getRegisterAtom = atom(
   (get) => get(registerAtom),
   async (get, set): Promise<boolean> => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(registerCancelTokenAtom, cancelToken);
 
     try {
@@ -32,7 +33,7 @@ export const getRegisterAtom = atom(
 export const removeRegisterAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(registerCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to register reset.");
+    cancelToken.cancel(getCancelMessage("register"));
   }
   set(registerAtom, null);
   return true;

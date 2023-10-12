@@ -1,7 +1,8 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import deleteProduct from "api/products/deleteProducts";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
+import { CancelTokenSource } from "axios";
 
 export const productToDeleteAtom = atom<string | null>(null);
 export const deleteProductErrorAtom = atom<string | null>(null);
@@ -12,11 +13,12 @@ export const deleteProductCancelTokenAtom = atom<CancelTokenSource | null>(
 export const deleteProductAtom = atom(
   (get) => get(productToDeleteAtom),
   async (get, set, { id }): Promise<boolean> => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(deleteProductCancelTokenAtom, cancelToken);
-    const [data, error] = await deleteProduct(id, cancelToken);
 
     try {
+      const [data, error] = await deleteProduct(id, cancelToken);
+      
       if (data) {
         set(productToDeleteAtom, data);
         return true;
@@ -33,7 +35,7 @@ export const deleteProductAtom = atom(
 export const resetDeleteProductAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(deleteProductCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to deleteProducts reset.");
+    cancelToken.cancel(getCancelMessage("deleteProducts"));
   }
   set(productToDeleteAtom, null);
   return true;

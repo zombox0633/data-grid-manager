@@ -1,7 +1,8 @@
 import { atom } from "jotai";
-import axios, { CancelTokenSource } from "axios";
-
 import authenticateUser from "api/authentication/authentication";
+import { createCancelToken, getCancelMessage } from "helpers/utils";
+
+import { CancelTokenSource } from "axios";
 
 export const secretAtom = atom<string | null>(
   localStorage.getItem("secret") || null
@@ -16,7 +17,7 @@ export const authenticateAtom = atom(
     set,
     { email, password }: { email: string; password: string }
   ): Promise<boolean> => {
-    const cancelToken = axios.CancelToken.source();
+    const cancelToken = createCancelToken();
     set(authenticateCancelTokenAtom, cancelToken);
 
     try {
@@ -42,7 +43,7 @@ export const authenticateAtom = atom(
 export const removeSecretAtom = atom(null, (get, set): boolean => {
   const cancelToken = get(authenticateCancelTokenAtom);
   if (cancelToken) {
-    cancelToken.cancel("Request was cancelled due to authenticate reset.");
+    cancelToken.cancel(getCancelMessage("authenticate"));
   }
   set(secretAtom, null);
   localStorage.removeItem("secret");
