@@ -1,6 +1,8 @@
 import { UserDataType } from "api/user/users.type";
 import { HeaderType } from "types/Table.type";
 
+export type UserValuesType = Partial<UserDataType>;
+
 export const UserHeaders: HeaderType<UserDataType>[] = [
   { key: "id", label: "id", editable: false },
   { key: "email", label: "email", editable: false },

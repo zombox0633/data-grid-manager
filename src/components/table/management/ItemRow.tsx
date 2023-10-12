@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TextInput from "./TextInput";
 import TableRowAction from "./TableRowAction";
-import ItemDropDown, { DropdownItemType } from "./ItemDropDown";
+import ItemDropDown from "./ItemDropDown";
 import {
   formatNumber,
   getCellAlignmentClass,
@@ -10,27 +10,24 @@ import {
 
 import useTableRowAction from "hook/useTable/useTableRowAction";
 import useGetUsers from "hook/useDataTable/user/useGetUsers";
-import { ActionState, HeaderType, tableRowItemId } from "types/Table.type";
+import useGetCategory from "hook/useDataTable/category/useGetCategory";
 
-type ItemRowType<T, U> = {
+import { ActionState, HeaderType, tableRowItemId } from "types/Table.type";
+import { CategoryDataType } from "api/category/category.type";
+
+type ItemRowType<T> = {
   headers: HeaderType<T>[];
   item: T;
-  dropdownItem: U[] | null;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
-  handleUpdateItem: (item: any) => Promise<boolean>;
-  handleDeleteItem: (itemId: string) => Promise<boolean>;
   rowColor: number;
 };
 
-function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
+function ItemRow<T extends tableRowItemId>({
   headers,
   item,
-  dropdownItem: itemDropDown,
   setRefreshKey,
-  handleUpdateItem,
-  handleDeleteItem,
   rowColor,
-}: ItemRowType<T, U>) {
+}: ItemRowType<T>) {
   const [actionState, setActionState] = useState<ActionState>({
     type: null,
     id: null,
@@ -44,14 +41,14 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
     setEditingValues,
   } = useTableRowAction({
     items: item,
-    handleUpdateItem,
-    handleDeleteItem,
     setActionState,
     setRefreshKey,
   });
 
   const { loadUserData } = useGetUsers();
   const [usersData] = loadUserData();
+  const { loadCategoryData } = useGetCategory();
+  const [categoryData] = loadCategoryData();
 
   const { id: itemId } = item;
   const categoryId =
@@ -72,15 +69,15 @@ function ItemRow<T extends tableRowItemId, U extends DropdownItemType>({
       case "category_id":
         if (isEditingCurrentRow)
           return (
-            <ItemDropDown<T, U>
+            <ItemDropDown<T, CategoryDataType>
               header={header}
               value={categoryId}
-              items={itemDropDown}
+              items={categoryData}
               handleInputChange={handleEditInputChange}
             />
           );
         return (
-          itemDropDown?.find((dropDown) => dropDown.id === item[header.key])
+          categoryData?.find((data) => data.id === item[header.key])
             ?.name || String(item[header.key])
         );
       case "price":

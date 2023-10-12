@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-
 import { showToast } from "style/toast";
 
 import {
@@ -65,7 +64,7 @@ function useProductActions() {
     priceProduct,
     quantityProduct,
     user_id,
-  }: AddProductType) => {
+  }: AddProductType): Promise<boolean> => {
     try {
       const success = await addProduct({
         name: nameProduct,
@@ -94,7 +93,7 @@ function useProductActions() {
     priceProduct,
     quantityProduct,
     user_id,
-  }: UpdateProductType) => {
+  }: UpdateProductType): Promise<boolean> => {
     try {
       const success = await updateProduct({
         id: product_id,
@@ -117,7 +116,7 @@ function useProductActions() {
     }
   };
 
-  const handleDeleteProduct = async (product_id: string) => {
+  const handleDeleteProduct = async (product_id: string): Promise<boolean> => {
     try {
       const success = await deleteProduct({ id: product_id });
       if (success) {

@@ -1,47 +1,44 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
+
+import useUsersActions from "hook/useDataTable/user/useUsersActions";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
-import useProductActions from "hook/useDataTable/product/useProductActions";
 import { ActionState } from "types/Table.type";
 
-type ProductDataToEditType = {
+type UserDataToEditType = {
   id: string;
   name?: string;
-  category_id?: string;
-  price?: number;
-  quantity?: number;
+  role?: string;
 };
 
-type useProductEditType<T> = {
-  product: T;
+type useUserEditType<T> = {
+  user: T;
   editingValues: Partial<T>;
   setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
   setActionState: React.Dispatch<React.SetStateAction<ActionState>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useProductEdit<T extends ProductDataToEditType>({
-  product,
+function useUserEdit<T extends UserDataToEditType>({
+  user,
   editingValues,
   setEditingValues,
   setActionState,
   setRefreshKey,
-}: useProductEditType<T>) {
+}: useUserEditType<T>) {
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleUpdateProduct } = useProductActions();
+  const { handleUpdateUsers } = useUsersActions();
 
   const handleConfirmEdit = useCallback(async () => {
     setIsDisabled(true);
-    const success = await handleUpdateProduct({
-      product_id: product.id,
-      nameProduct: editingValues.name ?? product.name,
-      category_id: editingValues.category_id,
-      priceProduct: editingValues.price,
-      quantityProduct: editingValues.quantity,
-      user_id: register?.data.id ?? "",
+    const success = await handleUpdateUsers({
+      userId: user.id ?? "",
+      userName: editingValues.name ?? user.name,
+      role: editingValues.role,
+      last_op_id: register?.data.id ?? "",
     });
 
     if (success) {
@@ -51,17 +48,19 @@ function useProductEdit<T extends ProductDataToEditType>({
     }
     setIsDisabled(false);
   }, [
-    product,
     editingValues,
+    user,
     register?.data.id,
-    handleUpdateProduct,
+    handleUpdateUsers,
     setActionState,
     setEditingValues,
     setRefreshKey,
     setIsDisabled,
   ]);
 
-  return { handleConfirmEdit };
+  return {
+    handleConfirmEdit,
+  };
 }
 
-export default useProductEdit;
+export default useUserEdit;

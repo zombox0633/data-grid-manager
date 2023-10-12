@@ -1,6 +1,8 @@
 import { CategoryDataType } from "api/category/category.type";
 import { HeaderType } from "types/Table.type";
 
+export type CategoryValuesType = Partial<CategoryDataType>;
+
 export const CategoryHeaders: HeaderType<CategoryDataType>[] = [
   { key: "id", label: "id", editable: false },
   { key: "name", label: "name", editable: true },

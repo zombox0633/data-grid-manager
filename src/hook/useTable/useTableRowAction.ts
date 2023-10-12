@@ -1,21 +1,18 @@
 import { useCallback, useState } from "react";
 import { useAtom } from "jotai";
 import useProductEdit from "./product/useProductEdit";
+import useProductActions from "hook/useDataTable/product/useProductActions";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { ActionState, tableRowItemId } from "types/Table.type";
 
 type useTableRowActionType<T> = {
   items: T;
-  handleUpdateItem: (data: any) => Promise<boolean>;
-  handleDeleteItem: (itemId: string) => Promise<boolean>;
   setActionState: React.Dispatch<React.SetStateAction<ActionState>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function useTableRowAction<T extends tableRowItemId>({
   items,
-  handleUpdateItem,
-  handleDeleteItem,
   setActionState,
   setRefreshKey,
 }: useTableRowActionType<T>) {
@@ -23,13 +20,14 @@ function useTableRowAction<T extends tableRowItemId>({
 
   const [editingValues, setEditingValues] = useState<Partial<T>>({});
 
+  const {handleDeleteProduct} = useProductActions()
+
   const { handleConfirmEdit } = useProductEdit<T>({
     product: items,
     editingValues,
     setEditingValues,
     setActionState,
     setRefreshKey,
-    handleUpdateItem,
   });
 
   const handleEditInputChange = (key: keyof T, value: string | number) => {
@@ -44,7 +42,7 @@ function useTableRowAction<T extends tableRowItemId>({
 
   const handleConfirmDelete = useCallback(async () => {
     setIsDisabled(true);
-    const success = await handleDeleteItem(items.id);
+    const success = await handleDeleteProduct(items.id);
     if (success) {
       setActionState({ type: null, id: null });
       setRefreshKey((prevKey) => prevKey + 1);
@@ -54,7 +52,7 @@ function useTableRowAction<T extends tableRowItemId>({
     items.id,
     setActionState,
     setRefreshKey,
-    handleDeleteItem,
+    handleDeleteProduct,
     setIsDisabled,
   ]);
 

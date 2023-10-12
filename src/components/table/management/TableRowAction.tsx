@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import DefaultButton from "components/button/DefaultButton";
 
-import useTableRowClickHandler from "hook/useTable/product/useTableRowClickHandler";
+import useTableRowClickHandler from "hook/useTable/useTableRowClickHandler";
 
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { ActionState } from "types/Table.type";

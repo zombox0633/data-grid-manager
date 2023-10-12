@@ -1,67 +1,54 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
-import { AddProductType } from "hook/useDataTable/product/useProductActions";
-import { ProductsDataType } from "api/products/products.type";
+import useProductActions from "hook/useDataTable/product/useProductActions";
+
 import { ProductValuesType } from "src/constraint/PRODUCT_TABLE";
 
-type useProductAdd = {
-  handleAddProduct: (productData: AddProductType) => Promise<boolean>;
+type useProductAdd<T> = {
+  newItem: ProductValuesType;
+  setNewItem: React.Dispatch<React.SetStateAction<Partial<T>>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useProductAdd({ handleAddProduct, setRefreshKey }: useProductAdd) {
+function useProductAdd<T>({
+  newItem,
+  setNewItem,
+  setRefreshKey,
+}: useProductAdd<T>) {
   const [register] = useAtom(registerAtom);
-  const [,setIsDisabled] = useAtom(isDisabledAtom)
-  const [newProduct, setNewProduct] = useState<ProductValuesType>({});
+  const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const handleNewProductInputChange = (
-    key: keyof ProductsDataType,
-    value: string
-  ) => {
-    setNewProduct((prevValues) => ({
-      ...prevValues,
-      [key]: value,
-    }));
-  };
+  const { handleAddProduct } = useProductActions();
 
-  const handleAdd = useCallback(async () => {
+  const addProduct = useCallback(async () => {
     setIsDisabled(true);
 
     const success = await handleAddProduct({
-      nameProduct: newProduct.name ?? "",
-      category_id: newProduct.category_id ?? "",
-      priceProduct: Number(newProduct.price) ?? 0,
-      quantityProduct: Number(newProduct.quantity) ?? 0,
+      nameProduct: newItem.name ?? "",
+      category_id: newItem.category_id ?? "",
+      priceProduct: Number(newItem.price) ?? 0,
+      quantityProduct: Number(newItem.quantity) ?? 0,
       user_id: register?.data.id ?? "",
     });
 
     if (success) {
-      setNewProduct({});
+      setNewItem({});
       setRefreshKey((prevKey) => prevKey + 1);
     }
     setIsDisabled(false);
   }, [
-    newProduct.name,
-    newProduct.category_id,
-    newProduct.price,
-    newProduct.quantity,
+    newItem,
     register?.data.id,
     handleAddProduct,
+    setNewItem,
     setRefreshKey,
-    setIsDisabled
+    setIsDisabled,
   ]);
 
-  const handleResetAdd = useCallback(() => {
-    setNewProduct({});
-  }, [setNewProduct]);
-
   return {
-    newProduct,
-    handleAdd,
-    handleNewProductInputChange,
-    handleResetAdd,
+    addProduct,
   };
 }
 
