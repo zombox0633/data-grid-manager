@@ -1,4 +1,6 @@
-export type LoadDataType<T> = () => [T[] | null, null | string ];
+export type TableType = "Product" | "Category" | "User";
+
+export type LoadDataType<T> = () => [T[] | null, null | string];
 
 export type HeaderType<T> = {
   key: keyof T;
@@ -13,14 +15,15 @@ export type GenericItemType<T> = {
 
 export interface tableRowItemId {
   id: string;
-  last_op_id:           string;
-  created_timestamp:    Date;
+  name: string;
+  last_op_id: string;
+  created_timestamp: Date;
   lastupdate_timestamp: Date;
 }
 
 type ActionType = "edit" | "delete" | null;
 
 export type ActionState = {
-  type: ActionType
-  id: string | null
-}
+  type: ActionType;
+  id: string | null;
+};

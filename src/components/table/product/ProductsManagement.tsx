@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import TableManagement from "../management/TableManagement";
-
 import useGetProducts from "hook/useDataTable/product/useGetProducts";
 
 import { productHeaders } from "src/constraint/PRODUCT_TABLE";
@@ -15,7 +13,7 @@ function ProductsManagement() {
   return (
     <>
       <TableManagement<ProductsDataType>
-        tableName={"Products"}
+        tableName={"Product"}
         itemHeaders={productHeaders}
         loadData={loadProductsData}
         setRefreshKey={setRefreshKey}

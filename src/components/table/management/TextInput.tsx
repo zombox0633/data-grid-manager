@@ -8,13 +8,9 @@ type TextInputType<T> = {
   handleInputChange: (key: keyof T, value: string) => void;
 };
 
-function TextInput<T>({
-  header,
-  value,
-  handleInputChange,
-}: TextInputType<T>) {
+function TextInput<T>({ header, value, handleInputChange }: TextInputType<T>) {
   const [isDisabled] = useAtom(isDisabledAtom);
-  
+
   return (
     <input
       {...(header.key === "price" || header.key === "quantity"
@@ -23,6 +19,8 @@ function TextInput<T>({
             min: "0",
             max: "99999",
           }
+        : header.key === "password"
+        ? { type: "password" }
         : { type: "text" })}
       aria-label={header.label}
       defaultValue={value}

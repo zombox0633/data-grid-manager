@@ -8,9 +8,10 @@ import {
 
 import { showToast } from "style/toast";
 import { showAllAtom } from "atoms/table/tableAtom";
+import { TableType } from "types/Table.type";
 
 type DataTableToolbarType<T> = {
-  tableName: string;
+  tableName: TableType;
   itemLength?: number;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   setFilteredData: React.Dispatch<React.SetStateAction<T[] | null>>;

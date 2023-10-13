@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
-import useProductActions from "hook/useDataTable/product/useProductActions";
+import useProduct from "hook/useDataTable/product/useProduct";
 import { ActionState } from "types/Table.type";
 
 type ProductDataToEditType = {
@@ -13,7 +13,7 @@ type ProductDataToEditType = {
   quantity?: number;
 };
 
-type useProductEditType<T> = {
+type useProductActionType<T> = {
   product: T;
   editingValues: Partial<T>;
   setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
@@ -21,19 +21,19 @@ type useProductEditType<T> = {
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useProductEdit<T extends ProductDataToEditType>({
+function useProductAction<T extends ProductDataToEditType>({
   product,
   editingValues,
   setEditingValues,
   setActionState,
   setRefreshKey,
-}: useProductEditType<T>) {
+}: useProductActionType<T>) {
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleUpdateProduct } = useProductActions();
+  const { handleUpdateProduct, handleDeleteProduct } = useProduct();
 
-  const handleConfirmEdit = useCallback(async () => {
+  const updatedProduct = useCallback(async () => {
     setIsDisabled(true);
     const success = await handleUpdateProduct({
       product_id: product.id,
@@ -61,7 +61,23 @@ function useProductEdit<T extends ProductDataToEditType>({
     setIsDisabled,
   ]);
 
-  return { handleConfirmEdit };
+  const deleteProduct = useCallback(async () => {
+    setIsDisabled(true);
+    const success = await handleDeleteProduct(product.id, product.name ?? "");
+    if (success) {
+      setActionState({ type: null, id: null });
+      setRefreshKey((prevKey) => prevKey + 1);
+    }
+    setIsDisabled(false);
+  }, [
+    product,
+    setActionState,
+    setRefreshKey,
+    handleDeleteProduct,
+    setIsDisabled,
+  ]);
+
+  return { updatedProduct, deleteProduct };
 }
 
-export default useProductEdit;
+export default useProductAction;

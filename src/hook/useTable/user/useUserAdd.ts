@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 
-import useUsersActions from "hook/useDataTable/user/useUsersActions";
+import useUsers from "hook/useDataTable/user/useUsers";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { UserValuesType } from "src/constraint/USERS_TABLE";
@@ -20,7 +20,7 @@ function useUserAdd<T>({
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleAddUser } = useUsersActions();
+  const { handleAddUser } = useUsers();
 
   const addUser = useCallback(async () => {
     setIsDisabled(true);

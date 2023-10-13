@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 
-import useCategoryActions from "hook/useDataTable/category/useCategoryActions";
+import useCategory from "hook/useDataTable/category/useCategory";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { CategoryValuesType } from "src/constraint/CATEGORY_TABLE";
@@ -20,7 +20,7 @@ function useCategoryAdd<T>({
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleAddCategory } = useCategoryActions();
+  const { handleAddCategory } = useCategory();
 
   const addCategory = useCallback(async () => {
     setIsDisabled(true);

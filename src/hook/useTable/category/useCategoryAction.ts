@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 
-import useCategoryActions from "hook/useDataTable/category/useCategoryActions";
+import useCategory from "hook/useDataTable/category/useCategory";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { ActionState } from "types/Table.type";
@@ -11,7 +11,7 @@ type CategoryDataToEditType = {
   name?: string;
 };
 
-type useCategoryEditType<T> = {
+type useCategoryActionType<T> = {
   category: T;
   editingValues: Partial<T>;
   setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
@@ -19,19 +19,19 @@ type useCategoryEditType<T> = {
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useCategoryEdit<T extends CategoryDataToEditType>({
+function useCategoryAction<T extends CategoryDataToEditType>({
   category,
   editingValues,
   setEditingValues,
   setActionState,
   setRefreshKey,
-}: useCategoryEditType<T>) {
+}: useCategoryActionType<T>) {
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleUpdateCategory } = useCategoryActions();
+  const { handleUpdateCategory, handleDeleteCategory } = useCategory();
 
-  const handleConfirmEdit = useCallback(async () => {
+  const updatedCategory = useCallback(async () => {
     setIsDisabled(true);
     const success = await handleUpdateCategory({
       category_id: category.id,
@@ -56,7 +56,26 @@ function useCategoryEdit<T extends CategoryDataToEditType>({
     setIsDisabled,
   ]);
 
-  return { handleConfirmEdit };
+  const deleteCategory = useCallback(async () => {
+    setIsDisabled(true);
+    const success = await handleDeleteCategory(
+      category.id,
+      category.name ?? ""
+    );
+    if (success) {
+      setActionState({ type: null, id: null });
+      setRefreshKey((prevKey) => prevKey + 1);
+    }
+    setIsDisabled(false);
+  }, [
+    category,
+    setActionState,
+    setRefreshKey,
+    handleDeleteCategory,
+    setIsDisabled,
+  ]);
+
+  return { updatedCategory, deleteCategory };
 }
 
-export default useCategoryEdit;
+export default useCategoryAction;

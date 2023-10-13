@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 
-import useUsersActions from "hook/useDataTable/user/useUsersActions";
+import useUsers from "hook/useDataTable/user/useUsers";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 import { ActionState } from "types/Table.type";
@@ -12,7 +12,7 @@ type UserDataToEditType = {
   role?: string;
 };
 
-type useUserEditType<T> = {
+type useUserActionType<T> = {
   user: T;
   editingValues: Partial<T>;
   setEditingValues: React.Dispatch<React.SetStateAction<Partial<T>>>;
@@ -20,19 +20,19 @@ type useUserEditType<T> = {
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function useUserEdit<T extends UserDataToEditType>({
+function useUserAction<T extends UserDataToEditType>({
   user,
   editingValues,
   setEditingValues,
   setActionState,
   setRefreshKey,
-}: useUserEditType<T>) {
+}: useUserActionType<T>) {
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleUpdateUsers } = useUsersActions();
+  const { handleUpdateUsers, handleDeleteUser } = useUsers();
 
-  const handleConfirmEdit = useCallback(async () => {
+  const updatedUser = useCallback(async () => {
     setIsDisabled(true);
     const success = await handleUpdateUsers({
       userId: user.id ?? "",
@@ -58,9 +58,20 @@ function useUserEdit<T extends UserDataToEditType>({
     setIsDisabled,
   ]);
 
+  const deleteUser = useCallback(async () => {
+    setIsDisabled(true);
+    const success = await handleDeleteUser(user.id, user.name ?? "");
+    if (success) {
+      setActionState({ type: null, id: null });
+      setRefreshKey((prevKey) => prevKey + 1);
+    }
+    setIsDisabled(false);
+  }, [user, setActionState, setRefreshKey, handleDeleteUser, setIsDisabled]);
+
   return {
-    handleConfirmEdit,
+    updatedUser,
+    deleteUser,
   };
 }
 
-export default useUserEdit;
+export default useUserAction;

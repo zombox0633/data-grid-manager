@@ -12,11 +12,17 @@ import useTableRowAction from "hook/useTable/useTableRowAction";
 import useGetUsers from "hook/useDataTable/user/useGetUsers";
 import useGetCategory from "hook/useDataTable/category/useGetCategory";
 
-import { ActionState, HeaderType, tableRowItemId } from "types/Table.type";
+import {
+  ActionState,
+  HeaderType,
+  TableType,
+  tableRowItemId,
+} from "types/Table.type";
 import { CategoryDataType } from "api/category/category.type";
 
 type ItemRowType<T> = {
   headers: HeaderType<T>[];
+  tableType: TableType;
   item: T;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   rowColor: number;
@@ -24,6 +30,7 @@ type ItemRowType<T> = {
 
 function ItemRow<T extends tableRowItemId>({
   headers,
+  tableType,
   item,
   setRefreshKey,
   rowColor,
@@ -40,6 +47,7 @@ function ItemRow<T extends tableRowItemId>({
     handleEditInputChange,
     setEditingValues,
   } = useTableRowAction({
+    tableType,
     items: item,
     setActionState,
     setRefreshKey,
@@ -77,8 +85,8 @@ function ItemRow<T extends tableRowItemId>({
             />
           );
         return (
-          categoryData?.find((data) => data.id === item[header.key])
-            ?.name || String(item[header.key])
+          categoryData?.find((data) => data.id === item[header.key])?.name ||
+          String(item[header.key])
         );
       case "price":
       case "quantity":
@@ -91,6 +99,8 @@ function ItemRow<T extends tableRowItemId>({
         ) : (
           formatNumber(Number(item[header.key]))
         );
+      case "password":
+        return;
       case "last_op_id":
         return (
           usersData?.find((user) => user.id === item[header.key])?.name ||

@@ -1,13 +1,14 @@
 import { useEffect } from "react";
-import { useAtom } from "jotai";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import Timer from "components/Timer";
+import { useAtom } from "jotai";
+import { registerAtom } from "atoms/registerAtom";
 import ProductsManagement from "components/table/product/ProductsManagement";
 import ProductsTable from "components/table/product/ProductsTable";
-
-import { registerAtom } from "atoms/registerAtom";
+import CategoryManagement from "components/table/category/CategoryManagement";
 import CategoryTable from "components/table/category/CategoryTable";
+import UsersManagement from "components/table/user/UsersManagement";
 import UsersTable from "components/table/user/UsersTable";
+import Timer from "components/Timer";
 
 function DataManagementPage() {
   const location = useLocation();
@@ -25,7 +26,7 @@ function DataManagementPage() {
   switch (location.pathname) {
     case "/data-management/products":
       table =
-        register?.data.role === "admin" ? (
+        register?.data.role === "admin" || register?.data.role === "dev" ? (
           <ProductsManagement />
         ) : (
           <ProductsTable />
@@ -33,11 +34,15 @@ function DataManagementPage() {
       break;
     case "/data-management/category":
       table =
-        register?.data.role === "admin" ? <CategoryTable /> : <CategoryTable />;
+        register?.data.role === "admin" || register?.data.role === "dev" ? (
+          <CategoryManagement />
+        ) : (
+          <CategoryTable />
+        );
       break;
     case "/data-management/users":
       if (register?.data.role === "admin") {
-        table = <UsersTable />;
+        table = <UsersManagement />;
       } else if (register?.data.role === "dev") {
         table = <UsersTable />;
       } else {

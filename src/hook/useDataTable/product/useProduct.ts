@@ -17,7 +17,6 @@ import {
   deleteProductErrorAtom,
 } from "atoms/productAtom/deleteProductAtom";
 
-import useErrorHandlerApi from "hook/useErrorHandlerApi";
 import useCancelToken from "hook/useCancelToken";
 
 export type AddProductType = {
@@ -37,7 +36,7 @@ export type UpdateProductType = {
   user_id: string;
 };
 
-function useProductActions() {
+function useProduct() {
   const [, addProduct] = useAtom(addProductAtom);
   const [addProductError] = useAtom(addProductErrorAtom);
   const [addProductCancel] = useAtom(addProductCancelTokenAtom);
@@ -54,10 +53,6 @@ function useProductActions() {
   useCancelToken(updateProductCancel);
   useCancelToken(deleteProductCancel);
 
-  useErrorHandlerApi(addProductError);
-  useErrorHandlerApi(updateProductError);
-  useErrorHandlerApi(deleteProductError);
-
   const handleAddProduct = async ({
     nameProduct,
     category_id,
@@ -65,6 +60,18 @@ function useProductActions() {
     quantityProduct,
     user_id,
   }: AddProductType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!nameProduct) missingFields.push("product name");
+    if (!category_id) missingFields.push("category");
+    if (!priceProduct) missingFields.push("price");
+    if (!quantityProduct) missingFields.push("quantity");
+    if (!user_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await addProduct({
         name: nameProduct,
@@ -79,8 +86,6 @@ function useProductActions() {
       }
       throw new Error(`Add failed for : ${addProductError}`);
     } catch (error) {
-      // const errMsg = (error as Error).message;
-      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
       return false;
     }
@@ -94,6 +99,15 @@ function useProductActions() {
     quantityProduct,
     user_id,
   }: UpdateProductType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!product_id) missingFields.push("product id");
+    if (!user_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await updateProduct({
         id: product_id,
@@ -109,24 +123,32 @@ function useProductActions() {
       }
       throw new Error(`Update failed for : ${updateProductError}`);
     } catch (error) {
-      // const errMsg = (error as Error).message;
-      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
       return false;
     }
   };
 
-  const handleDeleteProduct = async (product_id: string): Promise<boolean> => {
+  const handleDeleteProduct = async (
+    product_id: string,
+    nameProduct: string
+  ): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!product_id) missingFields.push("product id");
+    if (!nameProduct) missingFields.push("product name");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await deleteProduct({ id: product_id });
       if (success) {
-        showToast("success", `${product_id} deleted successfully!`);
+        showToast("success", `${nameProduct} deleted successfully!`);
         return true;
       }
       throw new Error(`Delete failed for : ${deleteProductError}`);
     } catch (error) {
-      // const errMsg = (error as Error).message;
-      // showToast("error", `Error: ${errMsg}`);
       console.error(error);
       return false;
     }
@@ -139,4 +161,6 @@ function useProductActions() {
   };
 }
 
-export default useProductActions;
+export default useProduct;
+//push ใส่
+//join(",") ต่อ

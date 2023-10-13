@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
-import useProductActions from "hook/useDataTable/product/useProductActions";
+import useProduct from "hook/useDataTable/product/useProduct";
 
 import { ProductValuesType } from "src/constraint/PRODUCT_TABLE";
 
@@ -20,7 +20,7 @@ function useProductAdd<T>({
   const [register] = useAtom(registerAtom);
   const [, setIsDisabled] = useAtom(isDisabledAtom);
 
-  const { handleAddProduct } = useProductActions();
+  const { handleAddProduct } = useProduct();
 
   const addProduct = useCallback(async () => {
     setIsDisabled(true);

@@ -7,10 +7,15 @@ import DataTableToolbar from "../DataTableToolbar";
 import useLoadingDefault from "hook/useLoadingDefault";
 import useSearchItem from "hook/useDataTable/useSearchItem";
 
-import { HeaderType, LoadDataType, tableRowItemId } from "types/Table.type";
+import {
+  HeaderType,
+  LoadDataType,
+  TableType,
+  tableRowItemId,
+} from "types/Table.type";
 
 type TableManagementType<T> = {
-  tableName: string;
+  tableName: TableType;
   itemHeaders: HeaderType<T>[];
   loadData: LoadDataType<T>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
@@ -38,38 +43,45 @@ function TableManagement<T extends tableRowItemId>({
         setFilteredData={setFilteredData}
         handleSearchItem={handleSearchItem}
       />
-      <table
-        className={`${
-          !displayData || displayData?.length === 0 ? "h-[60vh]" : "h-auto"
-        } w-[90vw] border border-eerieBlack border-collapse overflow-hidden`}
-      >
-        <TableHead headers={itemHeaders} isManagement={true} />
-        <tbody>
-          <AddItemRow<T> headers={itemHeaders} setRefreshKey={setRefreshKey} />
-          {itemError && (
-            <TableStateRow
-              status="error"
-              error={itemError}
-              colSpan={itemHeaders.length}
-            />
-          )}
-          {!displayData && !itemError && (
-            <TableStateRow status="loading" colSpan={itemHeaders.length} />
-          )}
-          {displayData && displayData?.length === 0 && !itemError && (
-            <TableStateRow status="empty" colSpan={itemHeaders.length} />
-          )}
-          {displayData.map((item, index) => (
-            <ItemRow<T>
+      <div className="rounded-t-md overflow-hidden">
+        <table
+          className={`${
+            !displayData || displayData?.length === 0 ? "h-[60vh]" : "h-auto"
+          } w-[90vw] border border-eerieBlack border-collapse `}
+        >
+          <TableHead headers={itemHeaders} isManagement={true} />
+          <tbody>
+            <AddItemRow<T>
               headers={itemHeaders}
-              key={item.id}
-              item={item}
+              tableType={tableName}
               setRefreshKey={setRefreshKey}
-              rowColor={index}
             />
-          ))}
-        </tbody>
-      </table>
+            {itemError && (
+              <TableStateRow
+                status="error"
+                error={itemError}
+                colSpan={itemHeaders.length}
+              />
+            )}
+            {!displayData && !itemError && (
+              <TableStateRow status="loading" colSpan={itemHeaders.length} />
+            )}
+            {displayData && displayData?.length === 0 && !itemError && (
+              <TableStateRow status="empty" colSpan={itemHeaders.length} />
+            )}
+            {displayData.map((item, index) => (
+              <ItemRow<T>
+                key={item.id}
+                headers={itemHeaders}
+                tableType={tableName}
+                item={item}
+                setRefreshKey={setRefreshKey}
+                rowColor={index}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -3,7 +3,6 @@ import client from "config/axiosConfig";
 
 import { onHandleErrorFromAPI } from "config/serviceApi";
 import { AxiosReturn } from "config/serviceApi.type";
-
 import { ProductsType } from "./products.type";
 
 type updateProductType = {

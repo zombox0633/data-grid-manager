@@ -9,16 +9,21 @@ import { getCellAlignmentClass } from "helpers/index";
 import { registerAtom } from "atoms/registerAtom";
 import { isDisabledAtom } from "atoms/table/tableAtom";
 
-import { HeaderType } from "types/Table.type";
+import { HeaderType, TableType } from "types/Table.type";
 import { CategoryDataType } from "api/category/category.type";
 import useTableAddItem from "hook/useTable/useTableAddItem";
 
 type AddItemRowType<T> = {
   headers: HeaderType<T>[];
+  tableType: TableType;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function AddItemRow<T>({ headers, setRefreshKey }: AddItemRowType<T>) {
+function AddItemRow<T>({
+  headers,
+  tableType,
+  setRefreshKey,
+}: AddItemRowType<T>) {
   const [register] = useAtom(registerAtom);
   const [isDisabled] = useAtom(isDisabledAtom);
 
@@ -30,7 +35,7 @@ function AddItemRow<T>({ headers, setRefreshKey }: AddItemRowType<T>) {
     handleConfirmToAdd,
     handleNewItemInputChange,
     handleResetAdd,
-  } = useTableAddItem<T>({ setRefreshKey });
+  } = useTableAddItem<T>({ tableType, setRefreshKey });
 
   const registerName = register?.data.name as string;
   const categoryId =
@@ -49,6 +54,7 @@ function AddItemRow<T>({ headers, setRefreshKey }: AddItemRowType<T>) {
         );
       case "last_op_id":
         return registerName ?? "Please login";
+      case "id":
       case "created_timestamp":
         return;
       case "lastupdate_timestamp":

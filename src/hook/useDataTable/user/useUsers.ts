@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import { showToast } from "style/toast";
 
 import useCancelToken from "hook/useCancelToken";
-import useErrorHandlerApi from "hook/useErrorHandlerApi";
 
 import {
   addUsersAtom,
@@ -35,7 +34,7 @@ type UpdateUserType = {
   last_op_id: string;
 };
 
-function useUsersActions() {
+function useUsers() {
   const [, addUsers] = useAtom(addUsersAtom);
   const [addUsersError] = useAtom(addUsersErrorAtom);
   const [addUsersCancel] = useAtom(addUsersCancelTokenAtom);
@@ -52,10 +51,6 @@ function useUsersActions() {
   useCancelToken(updateUsersCancel);
   useCancelToken(deleteUserCancel);
 
-  useErrorHandlerApi(addUsersError);
-  useErrorHandlerApi(updateUsersError);
-  useErrorHandlerApi(deleteUserError);
-
   const handleAddUser = async ({
     email,
     password,
@@ -63,6 +58,18 @@ function useUsersActions() {
     role,
     last_op_id,
   }: AddUserType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!email) missingFields.push("email");
+    if (!password) missingFields.push("password");
+    if (!userName) missingFields.push("user name");
+    if (!role) missingFields.push("user role");
+    if (!last_op_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await addUsers({
         email,
@@ -88,6 +95,15 @@ function useUsersActions() {
     role,
     last_op_id,
   }: UpdateUserType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!userId) missingFields.push("user id");
+    if (!last_op_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await updateUsers({
         id: userId,
@@ -106,11 +122,23 @@ function useUsersActions() {
     }
   };
 
-  const handleDeleteUser = async (user_id: string): Promise<boolean> => {
+  const handleDeleteUser = async (
+    user_id: string,
+    userName: string
+  ): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!user_id) missingFields.push("user id");
+    if (!userName) missingFields.push("user name");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+    
     try {
       const success = await deleteUser({ id: user_id });
       if (success) {
-        showToast("success", `${user_id} deleted successfully!`);
+        showToast("success", `${userName} deleted successfully!`);
         return true;
       }
       throw new Error(`Delete failed for : ${deleteUserError}`);
@@ -127,4 +155,4 @@ function useUsersActions() {
   };
 }
 
-export default useUsersActions;
+export default useUsers;

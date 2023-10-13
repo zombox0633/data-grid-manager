@@ -22,7 +22,7 @@ async function updateUsers({
 }: UpdateUsersType): AxiosReturn<UserType> {
   try {
     const response = await client.put<UserType>(
-      `/users/:${id}`,
+      `/users/${id}`,
       { name: name, role: role, last_op_id: last_op_id },
       { cancelToken: cancelToken?.token }
     );

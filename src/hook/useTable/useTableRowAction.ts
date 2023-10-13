@@ -1,34 +1,64 @@
-import { useCallback, useState } from "react";
-import { useAtom } from "jotai";
-import useProductEdit from "./product/useProductEdit";
-import useProductActions from "hook/useDataTable/product/useProductActions";
-import { isDisabledAtom } from "atoms/table/tableAtom";
-import { ActionState, tableRowItemId } from "types/Table.type";
+import { useState } from "react";
+import useProductAction from "./product/useProductAction";
+import useCategoryAction from "./category/useCategoryAction";
+import useUserAction from "./user/useUserAction";
+import { ActionState, TableType, tableRowItemId } from "types/Table.type";
 
 type useTableRowActionType<T> = {
+  tableType: TableType;
   items: T;
   setActionState: React.Dispatch<React.SetStateAction<ActionState>>;
   setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function useTableRowAction<T extends tableRowItemId>({
+  tableType,
   items,
   setActionState,
   setRefreshKey,
 }: useTableRowActionType<T>) {
-  const [, setIsDisabled] = useAtom(isDisabledAtom);
-
   const [editingValues, setEditingValues] = useState<Partial<T>>({});
 
-  const {handleDeleteProduct} = useProductActions()
-
-  const { handleConfirmEdit } = useProductEdit<T>({
+  const { updatedProduct, deleteProduct } = useProductAction<T>({
     product: items,
     editingValues,
     setEditingValues,
     setActionState,
     setRefreshKey,
   });
+  const { updatedCategory, deleteCategory } = useCategoryAction<T>({
+    category: items,
+    editingValues,
+    setEditingValues,
+    setActionState,
+    setRefreshKey,
+  });
+  const { updatedUser, deleteUser } = useUserAction<T>({
+    user: items,
+    editingValues,
+    setEditingValues,
+    setActionState,
+    setRefreshKey,
+  });
+
+  let handleConfirmEdit: () => Promise<void> = async () => {};
+  let handleConfirmDelete: () => Promise<void> = async () => {};
+  switch (tableType) {
+    case "Product":
+      handleConfirmEdit = updatedProduct;
+      handleConfirmDelete = deleteProduct;
+      break;
+    case "Category":
+      handleConfirmEdit = updatedCategory;
+      handleConfirmDelete = deleteCategory;
+      break;
+    case "User":
+      handleConfirmEdit = updatedUser;
+      handleConfirmDelete = deleteUser;
+      break;
+    default:
+      break;
+  }
 
   const handleEditInputChange = (key: keyof T, value: string | number) => {
     if (key === "price" || key === "quantity") {
@@ -40,28 +70,12 @@ function useTableRowAction<T extends tableRowItemId>({
     }));
   };
 
-  const handleConfirmDelete = useCallback(async () => {
-    setIsDisabled(true);
-    const success = await handleDeleteProduct(items.id);
-    if (success) {
-      setActionState({ type: null, id: null });
-      setRefreshKey((prevKey) => prevKey + 1);
-    }
-    setIsDisabled(false);
-  }, [
-    items.id,
-    setActionState,
-    setRefreshKey,
-    handleDeleteProduct,
-    setIsDisabled,
-  ]);
-
   return {
     editingValues,
     handleConfirmEdit,
     handleConfirmDelete,
     handleEditInputChange,
-    setEditingValues
+    setEditingValues,
   };
 }
 

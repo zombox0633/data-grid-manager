@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import { showToast } from "style/toast";
 
 import useCancelToken from "hook/useCancelToken";
-import useErrorHandlerApi from "hook/useErrorHandlerApi";
 
 import {
   addCategoryAtom,
@@ -31,7 +30,7 @@ export type UpdateCategoryType = {
   last_op_id: string;
 };
 
-function useCategoryActions() {
+function useCategory() {
   const [, addCategory] = useAtom(addCategoryAtom);
   const [addCategoryError] = useAtom(addCategoryErrorAtom);
   const [addCategoryCancel] = useAtom(addCategoryCancelTokenAtom);
@@ -48,14 +47,19 @@ function useCategoryActions() {
   useCancelToken(updateCategoryCancel);
   useCancelToken(deleteCategoryCancel);
 
-  useErrorHandlerApi(addCategoryError);
-  useErrorHandlerApi(updateCategoryError);
-  useErrorHandlerApi(deleteCategoryError);
-
   const handleAddCategory = async ({
     categoryName,
     last_op_id,
   }: AddCategoryType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!categoryName) missingFields.push("category name");
+    if (!last_op_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await addCategory({ name: categoryName, last_op_id });
       if (success) {
@@ -74,6 +78,16 @@ function useCategoryActions() {
     categoryName,
     last_op_id,
   }: UpdateCategoryType): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!category_id) missingFields.push("category id");
+    if (!categoryName) missingFields.push("category name");
+    if (!last_op_id) missingFields.push("register");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await updateCategory({
         id: category_id,
@@ -92,12 +106,22 @@ function useCategoryActions() {
   };
 
   const handleDeleteCategory = async (
-    category_id: string
+    category_id: string,
+    categoryName: string
   ): Promise<boolean> => {
+    const missingFields: string[] = [];
+    if (!category_id) missingFields.push("category id");
+    if (!categoryName) missingFields.push("category name");
+
+    if (missingFields.length) {
+      showToast("error", `Missing fields: ${missingFields.join(", ")}`);
+      return false;
+    }
+
     try {
       const success = await deleteCategory({ id: category_id });
       if (success) {
-        showToast("success", `${category_id} deleted successfully!`);
+        showToast("success", `${categoryName} deleted successfully!`);
         return true;
       }
       throw new Error(`Delete failed for : ${deleteCategoryError}`);
@@ -114,4 +138,4 @@ function useCategoryActions() {
   };
 }
 
-export default useCategoryActions;
+export default useCategory;
