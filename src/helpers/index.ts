@@ -1,9 +1,3 @@
-export const handleDIVScrollY = (divRef: React.RefObject<HTMLDivElement>) => {
-  if (divRef.current) {
-    return divRef.current.scrollTop;
-  }
-};
-
 export const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
 };

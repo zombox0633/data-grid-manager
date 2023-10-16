@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-
-import { handleDIVScrollY } from "helpers/index";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function useHomePage() {
   const [scrollY, setScrollY] = useState<number>(0);
-  const [backgroundColor, setBackgroundColor] = useState<string>("bg-floralWhite");
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const [backgroundColor, setBackgroundColor] =
+    useState<string>("bg-floralWhite");
 
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -14,6 +14,22 @@ function useHomePage() {
   // const bgColor = getComputedStyle(document.documentElement).getPropertyValue(
   //   backgroundColor
   // );
+  const handleDIVScrollY = (divRef: React.RefObject<HTMLDivElement>) => {
+    if (divRef.current) {
+      const scrollTop = divRef.current.scrollTop;
+      return scrollTop
+    }
+    return 0
+  };
+
+  const handleScrollToTop = useCallback(() => {
+    if (divRef.current) {
+      divRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, []);
 
   const newScrollY = () => {
     const ScrollY = handleDIVScrollY(divRef);
@@ -34,6 +50,10 @@ function useHomePage() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    setShowButton(scrollY >= 500);
+  }, [scrollY]);
 
   useEffect(() => {
     switch (true) {
@@ -57,8 +77,10 @@ function useHomePage() {
 
   return {
     scrollY,
+    showButton,
     backgroundColor,
-    divRef
+    divRef,
+    handleScrollToTop
   };
 }
 
