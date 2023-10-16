@@ -1,13 +1,14 @@
 import Footer from "components/Footer";
 import Section from "components/homePage/Section";
+import ScrollToTopButton from "components/button/ScrollToTopButton";
 
 import useHomePage from "hook/useHomePage";
-
-import { HOMEPAGE_LIST } from "src/constraint/HOMEPAGE_LIST";
 import useImageLoader from "hook/useImageLoader";
+import { HOMEPAGE_LIST } from "src/constraint/HOMEPAGE_LIST";
 
 function HomePage() {
-  const { backgroundColor, divRef } = useHomePage();
+  const { showButton, backgroundColor, divRef, handleScrollToTop } =
+    useHomePage();
 
   const { onImgLoaded } = useImageLoader(HOMEPAGE_LIST.length);
 
@@ -16,6 +17,7 @@ function HomePage() {
       {/* <div className=" absolute bottom-6 right-12 z-10">
         <p>{scrollY}</p>
       </div> */}
+      {showButton && <ScrollToTopButton onClick={handleScrollToTop} />}
       {HOMEPAGE_LIST &&
         HOMEPAGE_LIST.map((data, index) => (
           <Section

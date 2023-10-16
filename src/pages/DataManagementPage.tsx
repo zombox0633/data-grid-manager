@@ -25,20 +25,22 @@ function DataManagementPage() {
   let table;
   switch (location.pathname) {
     case "/data-management/products":
-      table =
-        register?.data.role === "admin" || register?.data.role === "dev" ? (
-          <ProductsManagement />
-        ) : (
-          <ProductsTable />
-        );
+      if (register?.data.role === "admin" || register?.data.role === "dev") {
+        table = <ProductsManagement />;
+      } else if (register?.data.role === "user") {
+        table = <ProductsTable />;
+      } else {
+        table = <Navigate to={"/"} replace />;
+      }
       break;
     case "/data-management/category":
-      table =
-        register?.data.role === "admin" || register?.data.role === "dev" ? (
-          <CategoryManagement />
-        ) : (
-          <CategoryTable />
-        );
+      if (register?.data.role === "admin" || register?.data.role === "dev") {
+        table = <CategoryManagement />;
+      } else if (register?.data.role === "user") {
+        table = <CategoryTable />;
+      } else {
+        table = <Navigate to={"/"} replace />;
+      }
       break;
     case "/data-management/users":
       if (register?.data.role === "admin") {
@@ -46,7 +48,7 @@ function DataManagementPage() {
       } else if (register?.data.role === "dev") {
         table = <UsersTable />;
       } else {
-        <Navigate to={"/"} replace />;
+        table = <Navigate to={"/"} replace />;
       }
       break;
     default:

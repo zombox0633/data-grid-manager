@@ -84,7 +84,7 @@ function AddItemRow<T>({
       ))}
       <td className="px-4 py-2 border border-eerieBlack bg-eerieBlack/10">
         <DefaultButton
-          aria-label="Add new product"
+          aria-label={`Add new ${tableType}`}
           onClick={handleConfirmToAdd}
           disabled={isDisabled}
           addClassName="table__button bg-green-400 disabled:bg-green-400/70"
