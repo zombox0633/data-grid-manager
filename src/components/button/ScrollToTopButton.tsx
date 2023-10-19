@@ -8,7 +8,7 @@ function ScrollToTopButton({ ...props }: ScrollToTopButtonType) {
   return (
     <button
       {...props}
-      className="absolute bottom-8 right-8 w-10 h-10 rounded-full bg-eerieBlack/50 backdrop-blur-md  hover:shadow-xl z-40"
+      className="absolute bottom-8 right-12 w-10 h-10 rounded-full bg-eerieBlack/50 backdrop-blur-md  hover:shadow-xl z-40"
     >
       <FontAwesomeIcon icon={faArrowUp} color="white"/>
     </button>
