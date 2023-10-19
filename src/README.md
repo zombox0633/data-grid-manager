@@ -37,6 +37,13 @@ ESLint a11y
 
 **Test
 unit test - vitest
+//https://devahoy.com/setup-vitest-with-react/
+
+
+https://jestjs.io/docs/tutorial-react
+
++ สร้างหรือแก้ไขไฟล์ jest.config.ts
 test components @testing-library/react
+
 
 @testing-library/userEvent

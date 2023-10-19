@@ -29,11 +29,11 @@
       "types/*": ["./src/types/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/test"],
   "exclude": ["./auto-imports.d.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
 }

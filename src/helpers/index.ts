@@ -1,7 +1,3 @@
-export const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text);
-};
-
 export const formatNumber = (number: number) => {
   return new Intl.NumberFormat().format(number);
 };
@@ -23,4 +19,8 @@ export const getCellAlignmentClass = (headerKey: string) => {
   } else {
     return "text-left";
   }
+};
+
+export const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text);
 };
