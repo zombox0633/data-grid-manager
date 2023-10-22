@@ -39,37 +39,43 @@ describe("getCellAlignmentClass", () => {
   });
 });
 
-// describe("copyToClipboard function", () => {
-//   let originalNavigator: typeof navigator;
-//   let calledWith: string | null;
+describe("copyToClipboard", () => {
+  let mockWriteText: jest.Mock;
 
-//   //beforeAll เกิดขึ้นเพียงครั้งเดียว ก่อนการทดสอบทั้งหมดใน describe
-//   beforeAll(() => {
-//     originalNavigator = global.navigator = {
-//       clipboard: {
-//         writeText(data: string) {
-//           calledWith = data;
-//         },
-//       },
-//     } as Navigator;
-//   });
+  beforeEach(() => {
+    mockWriteText = jest.fn();
+    Object.defineProperty(global.navigator, "clipboard", {
+      value: {
+        writeText: mockWriteText,
+      },
+      writable: true //writable ใน Object.defineProperty บ่งบอกว่า property นั้นสามารถเปลี่ยนแปลงค่าได้หรือไม่
+    });
+  });
 
-//   //ถูกเรียกก่อนทุกครั้งที่เริ่มการทดสอบ (it หรือ test block) ภายใน describe
-//   beforeEach(() => {
-//     calledWith = null;
-//   });
+  afterEach(() => {
+    Object.defineProperty(global.navigator, "clipboard", {
+      value: undefined,
+    })
+  });
 
-//   //ถูกเรียกหลังทุกครั้งที่การทดสอบ (it หรือ test block) ภายใน describe block ที่เกี่ยวข้องเสร็จสิ้น
-//   afterAll(() => {
-//     global.navigator = originalNavigator as Navigator;
-//   });
+  it("should call navigator.clipboard.writeText with the provided text", () => {
+    const testText = "Hello World"
+    copyToClipboard(testText)
 
-//   it("copies the provided text to the clipboard", () => {
-//     const sampleText = "Hello, World!";
-//     copyToClipboard(sampleText);
+    expect(mockWriteText).toHaveBeenCalledWith(testText)
+  });
 
-//     expect(calledWith).toEqual(sampleText);
-//   });
-// });
+  it("should not call navigator.clipboard.writeText if navigator.clipboard is undefined", () => {
+    Object.defineProperty(global.navigator, "clipboard", {
+      value: undefined,
+    })
 
+    copyToClipboard("Hello World")
+    
+    expect(mockWriteText).not.toHaveBeenCalledWith()
+  });
+});
+
+//Object.defineProperty กำหนดหรือแก้ไข properties ของอ็อบเจกต์ด้วยการกำหนดคุณสมบัติ
 //global คือ object ที่อยู่ในระดับบนสุดใน Node.js และคล้ายคลึงกับ object window ในเบราว์เซอร์. ใน context ของ Node.js, global ใช้เพื่อเข้าถึงตัวแปรและฟังก์ชันที่อยู่ในระดับ global.
+//navigator จะไม่มีอยู่ใน global scope แต่ในกรณีของ Jest, มันจำลองบางส่วนของ browser environment ด้วยการใช้ jsdom. เพื่อให้เราสามารถทำการทดสอบโค้ดที่เขียนสำหรับ browser ได้ใน environment ของ Node.js.

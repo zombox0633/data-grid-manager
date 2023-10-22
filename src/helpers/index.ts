@@ -4,7 +4,7 @@ export const formatNumber = (number: number) => {
 
 export const localFormattedDate = (time: Date) => {
   const localDate = new Date(time);
-  const FormattedDate = localDate.toLocaleString()
+  const FormattedDate = localDate.toLocaleString();
   return FormattedDate;
 };
 
@@ -22,5 +22,7 @@ export const getCellAlignmentClass = (headerKey: string) => {
 };
 
 export const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+  }
 };

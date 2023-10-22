@@ -7,7 +7,7 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { copyToClipboard } from "helpers/index";
+import { copyToClipboard } from "../helpers/index";
 
 function Footer() {
   return (
