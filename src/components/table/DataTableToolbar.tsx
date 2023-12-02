@@ -59,12 +59,13 @@ function DataTableToolbar<T>({
         </span>
       </div>
       <div className=" flex justify-between items-center my-4">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className=" w-[22rem]">
           <input
             aria-label="Search for products"
             type="text"
             onChange={handleInputChange}
-            className="w-72 border-2 border-eerieBlack/60 rounded-md px-2"
+            placeholder={`${tableName} name`}
+            className="w-72 mr-1 border-2 border-eerieBlack/60 rounded-md px-2"
           />
           <button
             aria-label="Search"

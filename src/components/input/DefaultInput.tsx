@@ -7,17 +7,9 @@ type DefaultInputPropTypes = Omit<
   addClassName?: string;
 };
 
-function DefaultInput({
-  addClassName,
-  children,
-  ...props
-}: DefaultInputPropTypes) {
+function DefaultInput({ addClassName, ...props }: DefaultInputPropTypes) {
   const inputClass = addClassName ? addClassName : "sign_in__input";
-  return (
-    <input {...props} className={inputClass}>
-      {children}
-    </input>
-  );
+  return <input {...props} className={inputClass} />;
 }
 
 export default DefaultInput;

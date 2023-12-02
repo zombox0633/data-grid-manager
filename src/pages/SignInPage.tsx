@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import useAuthentication from "hook/useAuth/useAuthentication";
 import { getStatusColor, getStatusMessage } from "hook/useAuth/statusHandlers";
 import useImageLoader from "hook/useImageLoader";
@@ -7,6 +9,7 @@ import DefaultInput from "components/input/DefaultInput";
 import SignInImageGrid from "components/signInPage/SignInImageGrid";
 
 import { SIGNINPAGE_LIST } from "src/constraint/SIGNINPAGE_LIST";
+import { useCallback, useState } from "react";
 
 function SignInPage() {
   useImageLoader;
@@ -21,6 +24,12 @@ function SignInPage() {
 
   const statusMessage = getStatusMessage(authStatus);
   const statusColor = getStatusColor(authStatus);
+
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+
+  const togglePasswordVisible = useCallback(() => {
+    setPasswordVisible((prev) => !prev);
+  }, [setPasswordVisible]);
 
   const { onImgLoaded } = useImageLoader(SIGNINPAGE_LIST.length);
 
@@ -61,16 +70,28 @@ function SignInPage() {
                 onChange={handleInputChange}
                 disabled={isProcessing}
               />
-              <DefaultInput
-                type="password"
-                name="password"
-                minLength={8}
-                placeholder="password"
-                required
-                value={credentials.password}
-                onChange={handleInputChange}
-                disabled={isProcessing}
-              />
+              <div className="relative">
+                <DefaultInput
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  minLength={8}
+                  placeholder="password"
+                  required
+                  value={credentials.password}
+                  onChange={handleInputChange}
+                  disabled={isProcessing}
+                />
+                <button
+                  onClick={togglePasswordVisible}
+                  className=" absolute top-1/2 right-2 -translate-x-1/2 -translate-y-1/2"
+                >
+                  {passwordVisible ? (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </button>
+              </div>
               <div className=" flex items-center justify-end h-4 mx-2 my-2">
                 <span className={`text-sm font-bold ${statusColor}`}>
                   {statusMessage}
