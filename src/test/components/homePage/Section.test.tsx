@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Section from "../../../components/homePage/Section";
 
-describe("", () => {
+describe("Section component", () => {
   it("renders the image with the correct src and alt", () => {
     const mockOnImgLoaded = jest.fn();
     render(
